@@ -1,0 +1,36 @@
+body {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f0f0f0; /* Color de fondo gris para la página */
+}
+
+.imagen-con-efecto {
+    width: 300px; /* Ajusta el ancho de la imagen según tus necesidades */
+    height: 400px; /* Ajusta la altura de la imagen según tus necesidades */
+    background-image: url('color-image.jpg');
+    background-size: cover;
+    position: relative;
+    overflow: hidden;
+}
+
+.imagen-con-efecto::before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(to bottom, rgba(255, 0, 0, 0.7) 50%, rgba(128, 128, 128, 0.7) 50%);
+    background-size: 100% 200%;
+    transition: background-position 0.5s ease;
+    mix-blend-mode: luminosity; /* Cambia el modo de mezcla para la máscara de color y gris */
+}
+
+/* Agrega un efecto de hover para cambiar el porcentaje de color al pasar el ratón */
+.imagen-con-efecto:hover::before {
+    background-position: 0% 100%;
+}

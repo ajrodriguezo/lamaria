@@ -154,11 +154,10 @@ main {
 
 #container-1 {
   position: relative;
-  width:50%; /* Ajusta el ancho del contenedor según tus necesidades */
-  align-items: f;
-  
-  
+  width: 300px; /* Puedes ajustar el ancho según tus necesidades */
+  height: 200px;
 }
+
 #image-1,
 #image-3 {
     width:100%; /* Ambas imágenes ocupan el 100% del ancho del contenedor */
@@ -168,6 +167,6 @@ main {
 
 #image-1 {
   width: 100%; /* Ajusta el ancho de la imagen al 100% del contenedor */
-  z-index: 2;
+  z-index: 1;
 
 }

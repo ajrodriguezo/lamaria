@@ -1,13 +1,13 @@
 document.addEventListener("DOMContentLoaded", function() {
   // Obtén la referencia a la imagen y ajusta el clip-path
-  var image = document.getElementById("image-1");
-  var porcentajeVisible = 50; // Puedes cambiar este valor según tus necesidades
+var image = document.getElementById("image-1");
+var porcentajeVisible = 85; 
 
-  // Calcula la coordenada y para el porcentaje dado
-  var yCoordinate = 100 - porcentajeVisible;
+// Calcula la coordenada y para el porcentaje dado
+var yCoordinate = 100 - porcentajeVisible;
 
-  // Aplica el clip-path con la coordenada y calculada
-  image.style.clipPath = `polygon(0 ${yCoordinate}%, 100% ${yCoordinate}%, 100% 100%, 0 100%)`;
+// Aplica el clip-path con la coordenada y calculada
+image.style.clipPath = `polygon(0 ${yCoordinate}%, 100% ${yCoordinate}%, 100% 100%, 0 100%)`;
 });
 
 var ctx = document.getElementById('myChart').getContext('2d');

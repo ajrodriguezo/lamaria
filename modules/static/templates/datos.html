@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
-    <title>Finca La Marina</title>
+    <link rel="stylesheet" href="{{url_for('static', path='/css/styles.css')}}">
+    <title>{{title}}</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
@@ -14,15 +14,15 @@
     <header id="page-header">
 
         <div id="branding">
-            <h1 id="site-title">Finca La Marina</h1>
+            <h1 id="site-title">{{title}}</h1>
         </div>
 
         <div id="navigation">
             <input type="checkbox" id="menu">
             <label for="menu">☰</label>
             <ul>
-                <li><a href=main.html id="nav-home">Inicio</a></li>
-                <li><a href=datos.html id="nav-datos">Datos</a></li>
+                <li><a href=/LaMaria/home id="nav-home">Inicio</a></li>
+                <li><a href=/LaMaria/ingresoDatos id="nav-datos">Datos</a></li>
             </ul>
         </div>
 
@@ -37,6 +37,6 @@
         <p>&copy; Finca La Marina</p>
     </footer>
     
-    <script src="script.js"></script>
+    <script src="{{url_for('static', path='/js/script.js')}}"></script>
 </body>
 </html>

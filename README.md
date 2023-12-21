@@ -3,7 +3,16 @@ dashboard la maria
 
 
 ## Uso
-Para iniciar la aplicación, ejecute el siguiente comando en la línea de comandos:
+Para iniciar la aplicación, ejecute el siguiente:
+
+1. Crear un entorno en *Conda*
+2. En el instale:
+
+´´´bash
+pip install Jinja2 && \
+pip install fastapi && \
+pip install "uvicorn[standard]"
+´´´
 
 ```python
 uvicorn app:app

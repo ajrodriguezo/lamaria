@@ -1,0 +1,12 @@
+# Ignore directories to github repositories
+
+test/
+temp/
+
+__pycache__/
+
+**/modules/models/**/*.pickle
+
+**/modules/db/**/*.db
+
+**/*.db

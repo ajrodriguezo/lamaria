@@ -39,3 +39,10 @@ templates = Jinja2Templates(directory="modules/static/templates")
 def home(request: Request):
     title = 'Finca La Marina'
     return templates.TemplateResponse("main.html",{"request": request, "title": title})
+
+## Ingreso Datos
+@app.get("/LaMaria/ingresoDatos")
+async def home(request: Request):
+    print
+    title = 'Finca La Marina'
+    return templates.TemplateResponse("datos.html",{"request": request, "title": title})

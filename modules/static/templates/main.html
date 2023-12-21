@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>{{title}}</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+    <header id="page-header">
+
+        <div id="branding">
+            <h1 id="site-title">{{title}}</h1>
+        </div>
+
+        <div id="navigation">
+            <input type="checkbox" id="menu">
+            <label for="menu">☰</label>
+            <ul>
+                <li><a href=main.html id="nav-home">Inicio</a></li>
+                <li><a href=datos.html id="nav-datos">Datos</a></li>
+            </ul>
+        </div>
+
+    </header>
+
+    <main>
+
+        <div class="container" id="container-1">
+            <img src="color.png" alt="Imagen 1" id="image-1">
+
+        </div>
+
+        <div class="container" id="container-2">
+            <div class="sub-container" id="sub-container-1">
+                <span id="gracumulados">Contenido 1</span>
+                <p>gr acumulados</p>
+            </div>
+            <div class="sub-container" id="sub-container-2">
+                <span id="faltante">Contenido 2</span>
+                <p>gr Faltantes</p>                
+            </div>
+            <div class="sub-container" id="sub-container-3">
+                <span id="vendidoahoy">Contenido 3</span>
+                <p>Vendido a la fecha</p>
+            </div>
+            <div class="sub-container" id="sub-container-4">
+                <span id="promedioprecio">Contenido 4</span>
+                <p>Precio promedio por Kg</p>        
+                <div class="container " id="button-container">
+                    <button>Generar pdf</button>
+                </div>
+            </div>
+        </div>
+    
+
+    <div class="container" id="container-3">
+        <canvas id="myChart"></canvas>
+    </div>
+
+
+    </main>
+
+
+    <footer id="page-footer">
+        <p>&copy; Finca La Marina</p>
+    </footer>
+    
+    <script src="script.js"></script>
+</body>
+</html>

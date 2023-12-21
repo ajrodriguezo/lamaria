@@ -108,13 +108,12 @@ main {
   margin: 10px;
 }
 
-#image-1, #image-2 {
-  max-width: 100%;
-  height: auto;
-}
-
 .sub-container {
-  margin: 10px 0;
+  text-align: center;
+  padding: 20px;
+  font-family: Arial, Helvetica, sans-serif, sans-serif; /* Cambia la fuente según tus preferencias */
+  color: #eee127;
+  
 }
 
 /* Estilos para el pie de página */
@@ -152,21 +151,7 @@ main {
   background-color: #b0b0b0b5; /* Cambia el color de fondo al pasar el ratón sobre el enlace */
 }
 
-#container-1 {
-  position: relative;
-  width: 300px; /* Puedes ajustar el ancho según tus necesidades */
-  height: 200px;
-}
-
-#image-1,
-#image-3 {
-    width:100%; /* Ambas imágenes ocupan el 100% del ancho del contenedor */
-    height: auto; /* Mantenemos la proporción original de las imágenes */
-    position: absolute; /* Permite posicionar las imágenes de forma absoluta dentro del contenedor relativo */
-}
-
 #image-1 {
   width: 100%; /* Ajusta el ancho de la imagen al 100% del contenedor */
   z-index: 1;
-
 }

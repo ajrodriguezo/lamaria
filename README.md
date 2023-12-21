@@ -11,7 +11,8 @@ Para iniciar la aplicación, ejecute el siguiente:
 ´´´bash
 pip install Jinja2 && \
 pip install fastapi && \
-pip install "uvicorn[standard]"
+pip install "uvicorn[standard]" && \
+pip install python-multipart
 ´´´
 
 ```python

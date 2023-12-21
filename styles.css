@@ -155,3 +155,16 @@ main {
   width: 100%; /* Ajusta el ancho de la imagen al 100% del contenedor */
   z-index: 1;
 }
+
+#button-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+#button-container button {
+  width: 150px;
+  height: 40px;
+  /* Puedes agregar más estilos según tus necesidades */
+}

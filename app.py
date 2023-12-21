@@ -30,6 +30,7 @@ app = FastAPI()
 logging.info('Iniciando App')
 
 ## Create templates
+
 app.mount("/static", StaticFiles(directory="modules/static"), name="static")
 templates = Jinja2Templates(directory="modules/static/templates")
 

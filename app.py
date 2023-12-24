@@ -5,7 +5,7 @@ from fastapi.templating import Jinja2Templates
 import asyncio
 import os
 from pathlib import Path
-from datetime import datetime
+from datetime import datetime, timedelta
 import logging
 import warnings
 warnings.filterwarnings("ignore")
@@ -43,12 +43,27 @@ db.base.metadata.create_all(bind = db.engine)
 
 fecha_actual = datetime.now().date()
 
-new_row = Database(ciclo_id='ciclo_test1', fecha = fecha_actual,ciclo_1=10, ciclo_2=100, ciclo_3=100, ciclo_4 = 400,)
-db.session.add(new_row)
+Database.add({
+    'ciclo_id': 'ciclo_test1',
+    'fecha': fecha_actual - timedelta(days=1),
+    'ciclo_1': 10,
+    'ciclo_2': 100,
+    'ciclo_3': 100,
+    'ciclo_4': 400
+})
 
-new_row = Database(ciclo_id='ciclo_test2', fecha = fecha_actual, ciclo_1=0, ciclo_2=150, ciclo_3=500, ciclo_4 = 300,)
-db.session.add(new_row)
-db.session.commit()
+Database.add({
+    'ciclo_id': 'ciclo_test2',
+    'fecha': fecha_actual,
+    'ciclo_1': 0,
+    'ciclo_2': 150,
+    'ciclo_3': 500,
+    'ciclo_4': 300
+})
+
+Database.update(ciclo_id = 'ciclo_test2', dict_update= {'ciclo_4': 0})
+
+print("Ultima session", Database.getLastId().ciclo_id, Database.getLastId().fecha)
 
 ## Create templates
 app.mount("/static", StaticFiles(directory="modules/static"), name="static")
@@ -67,5 +82,3 @@ async def home(request: Request):
     title = 'Finca La Marina'
     return templates.TemplateResponse("datos.html",{"request": request, "title": title})
 
-
-db.session.close()

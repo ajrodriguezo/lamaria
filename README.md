@@ -12,7 +12,8 @@ Para iniciar la aplicación, ejecute el siguiente:
 pip install Jinja2 && \
 pip install fastapi && \
 pip install "uvicorn[standard]" && \
-pip install python-multipart
+pip install python-multipart && \
+pip install sqlalchemy
 ```
 
 ```bash

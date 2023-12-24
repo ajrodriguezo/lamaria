@@ -5,6 +5,7 @@ from fastapi.templating import Jinja2Templates
 import asyncio
 import os
 from pathlib import Path
+from datetime import datetime
 import logging
 import warnings
 warnings.filterwarnings("ignore")
@@ -39,10 +40,12 @@ Base.metadata.create_all(bind = engine)
 Session = SessionLocal
 session = Session()
 
-new_row = Database(ciclo_id='ciclo_test1', ciclo_1=10, ciclo_2=100, ciclo_3=100, ciclo_4 = 400,)
+fecha_actual = datetime.now().date()
+
+new_row = Database(ciclo_id='ciclo_test1', fecha = fecha_actual,ciclo_1=10, ciclo_2=100, ciclo_3=100, ciclo_4 = 400,)
 session.add(new_row)
 
-new_row = Database(ciclo_id='ciclo_test2', ciclo_1=0, ciclo_2=150, ciclo_3=500, ciclo_4 = 300,)
+new_row = Database(ciclo_id='ciclo_test2', fecha = fecha_actual, ciclo_1=0, ciclo_2=150, ciclo_3=500, ciclo_4 = 300,)
 session.add(new_row)
 session.commit()
 

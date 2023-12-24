@@ -5,18 +5,16 @@ from fastapi.templating import Jinja2Templates
 import asyncio
 from pathlib import Path
 import logging
-
 import warnings
 warnings.filterwarnings("ignore")
 
+from config.database import SessionLocal, engine, Base
+from modules.orm import Database
 ## Create directorys necessary
 # Path('temp').mkdir(parents=True, exist_ok=True)
 Path('logs').mkdir(parents=True, exist_ok=True)
 # Path('modules/backend/db').mkdir(parents=True, exist_ok=True)
 # Path('modules/backend/models').mkdir(parents=True, exist_ok=True)
-
-## Create database
-# db.create_db()
 
 # Configure logging
 logging.basicConfig(filename = 'logs/lamaria.log')
@@ -28,6 +26,9 @@ console_handler = logging.StreamHandler()
 # Crete app
 app = FastAPI()
 logging.info('Iniciando App')
+
+## Create database
+Base.metadata.create_all(bind = engine)
 
 ## Create templates
 

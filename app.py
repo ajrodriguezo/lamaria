@@ -11,7 +11,8 @@ import warnings
 warnings.filterwarnings("ignore")
 
 from config.database import SessionLocal, engine, Base
-from modules.orm import Database
+from models.orm import Database
+
 ## Create directorys necessary
 # Path('temp').mkdir(parents=True, exist_ok=True)
 Path('logs').mkdir(parents=True, exist_ok=True)
@@ -50,7 +51,6 @@ session.add(new_row)
 session.commit()
 
 ## Create templates
-
 app.mount("/static", StaticFiles(directory="modules/static"), name="static")
 templates = Jinja2Templates(directory="modules/static/templates")
 
@@ -58,6 +58,10 @@ templates = Jinja2Templates(directory="modules/static/templates")
 @app.get("/LaMaria/home")
 def home(request: Request):
     title = 'Finca La Marina'
+    Session = SessionLocal ; session = Session()
+
+    query = Consulta(session)
+    
     return templates.TemplateResponse("main.html",{"request": request, "title": title})
 
 ## Ingreso Datos

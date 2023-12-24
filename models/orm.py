@@ -1,6 +1,5 @@
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Float, Date
 from sqlalchemy.orm import relationship
-
 from config.database import Base
 
 class Database(Base):
@@ -11,3 +10,6 @@ class Database(Base):
 
 for c in range(1, 21):
     setattr(Database, f'ciclo_{c}', Column(Float))
+
+
+    

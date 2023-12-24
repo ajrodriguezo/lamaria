@@ -30,6 +30,16 @@ logging.info('Iniciando App')
 ## Create database
 Base.metadata.create_all(bind = engine)
 
+# Example
+Session = SessionLocal
+session = Session()
+new_row = Database(ciclo_id='ciclo_test1', ciclo_1=10, ciclo_2=100, ciclo_3=100, ciclo_4 = 400,)
+session.add(new_row)
+
+new_row = Database(ciclo_id='ciclo_test2', ciclo_1=0, ciclo_2=150, ciclo_3=500, ciclo_4 = 300,)
+session.add(new_row)
+session.commit()
+
 ## Create templates
 
 app.mount("/static", StaticFiles(directory="modules/static"), name="static")

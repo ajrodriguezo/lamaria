@@ -1,6 +1,7 @@
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Float, Date
 from sqlalchemy.orm import relationship
 from models import db
+import numpy as np
 
 Base = db.base
 
@@ -72,7 +73,7 @@ class Database(Base):
 
 
 for c in range(1, 21):
-    setattr(Database, f'semana_{c}', Column(Float))
+    setattr(Database, f'semana_{c}', Column(Float, default= np.nan))
 
 
     

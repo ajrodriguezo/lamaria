@@ -45,22 +45,22 @@ fecha_actual = datetime.now().date()
 Database.add({
     'ciclo_id': 'ciclo_test1',
     'fecha': fecha_actual - timedelta(days=1),
-    'ciclo_1': 10,
-    'ciclo_2': 100,
-    'ciclo_3': 100,
-    'ciclo_4': 400
+    'semana_1': 10,
+    'semana_2': 100,
+    'semana_3': 100,
+    'semana_4': 400
 })
 
 Database.add({
     'ciclo_id': 'ciclo_test2',
     'fecha': fecha_actual,
-    'ciclo_1': 0,
-    'ciclo_2': 150,
-    'ciclo_3': 500,
-    'ciclo_4': 300
+    'semana_1': 0,
+    'semana_2': 150,
+    'semana_3': 500,
+    'semana_4': 300
 })
 
-Database.update(ciclo_id = 'ciclo_test2', dict_update= {'ciclo_4': 0})
+Database.update(ciclo_id = 'ciclo_test2', dict_update= {'semana_4': 0})
 
 Database.delete(ciclo_id = 'ciclo_test1')
 
@@ -80,7 +80,7 @@ def home(request: Request):
         result_dict = helpers.obj2dict(lastId)
 
     print(result_dict)
-    
+
     return templates.TemplateResponse("main.html",{"request": request, "title": title})
 
 ## Ingreso Datos

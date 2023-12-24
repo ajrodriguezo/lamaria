@@ -39,8 +39,6 @@ logging.info('Iniciando App')
 db.base.metadata.create_all(bind = db.engine)
 
 # Example
-
-
 fecha_actual = datetime.now().date()
 
 Database.add({
@@ -62,6 +60,8 @@ Database.add({
 })
 
 Database.update(ciclo_id = 'ciclo_test2', dict_update= {'ciclo_4': 0})
+
+Database.delete(ciclo_id = 'ciclo_test1')
 
 print("Ultima session", Database.getLastId().ciclo_id, Database.getLastId().fecha)
 

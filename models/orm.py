@@ -67,7 +67,7 @@ class Database(Base):
             return last_interaction
         except Exception as e:
             print("Error ", e)
-            return "No_found"
+            return None
         
 
 

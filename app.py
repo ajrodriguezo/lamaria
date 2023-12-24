@@ -12,6 +12,7 @@ warnings.filterwarnings("ignore")
 
 from models.orm import Database
 from models import db
+from modules import helpers
 
 ## Create directorys necessary
 # Path('temp').mkdir(parents=True, exist_ok=True)
@@ -72,7 +73,14 @@ templates = Jinja2Templates(directory="modules/static/templates")
 ## Home page
 @app.get("/LaMaria/home")
 def home(request: Request):
-    title = 'Finca La Marina'    
+    title = 'Finca La Marina'
+    lastId = Database.getLastId()
+
+    if lastId:
+        result_dict = helpers.obj2dict(lastId)
+
+    print(result_dict)
+    
     return templates.TemplateResponse("main.html",{"request": request, "title": title})
 
 ## Ingreso Datos

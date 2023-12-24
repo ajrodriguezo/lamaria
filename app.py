@@ -10,8 +10,8 @@ import logging
 import warnings
 warnings.filterwarnings("ignore")
 
-from config.database import SessionLocal, engine, Base
 from models.orm import Database
+from models import db
 
 ## Create directorys necessary
 # Path('temp').mkdir(parents=True, exist_ok=True)
@@ -27,6 +27,7 @@ formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s: %(message
 console_handler = logging.StreamHandler()
 
 try:
+    print("Eliminando db ... ")
     os.remove("tmp.db")
 except: pass
 
@@ -34,21 +35,20 @@ except: pass
 app = FastAPI()
 logging.info('Iniciando App')
 
-## Create database
-Base.metadata.create_all(bind = engine)
+
+db.base.metadata.create_all(bind = db.engine)
 
 # Example
-Session = SessionLocal
-session = Session()
+
 
 fecha_actual = datetime.now().date()
 
 new_row = Database(ciclo_id='ciclo_test1', fecha = fecha_actual,ciclo_1=10, ciclo_2=100, ciclo_3=100, ciclo_4 = 400,)
-session.add(new_row)
+db.session.add(new_row)
 
 new_row = Database(ciclo_id='ciclo_test2', fecha = fecha_actual, ciclo_1=0, ciclo_2=150, ciclo_3=500, ciclo_4 = 300,)
-session.add(new_row)
-session.commit()
+db.session.add(new_row)
+db.session.commit()
 
 ## Create templates
 app.mount("/static", StaticFiles(directory="modules/static"), name="static")
@@ -57,11 +57,7 @@ templates = Jinja2Templates(directory="modules/static/templates")
 ## Home page
 @app.get("/LaMaria/home")
 def home(request: Request):
-    title = 'Finca La Marina'
-    Session = SessionLocal ; session = Session()
-
-    query = Consulta(session)
-    
+    title = 'Finca La Marina'    
     return templates.TemplateResponse("main.html",{"request": request, "title": title})
 
 ## Ingreso Datos
@@ -72,4 +68,4 @@ async def home(request: Request):
     return templates.TemplateResponse("datos.html",{"request": request, "title": title})
 
 
-session.close()
+db.session.close()

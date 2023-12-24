@@ -1,6 +1,8 @@
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Float, Date
 from sqlalchemy.orm import relationship
-from config.database import Base
+from models import db
+
+Base = db.base
 
 class Database(Base):
     __tablename__ = 'LaMariaCosecha'

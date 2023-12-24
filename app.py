@@ -3,6 +3,7 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 import asyncio
+import os
 from pathlib import Path
 import logging
 import warnings
@@ -23,6 +24,10 @@ logger.setLevel(logging.DEBUG)
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s: %(message)s', '%d-%m-%Y %I:%M:%S %p')
 console_handler = logging.StreamHandler()
 
+try:
+    os.remove("tmp.db")
+except: pass
+
 # Crete app
 app = FastAPI()
 logging.info('Iniciando App')
@@ -33,6 +38,7 @@ Base.metadata.create_all(bind = engine)
 # Example
 Session = SessionLocal
 session = Session()
+
 new_row = Database(ciclo_id='ciclo_test1', ciclo_1=10, ciclo_2=100, ciclo_3=100, ciclo_4 = 400,)
 session.add(new_row)
 
@@ -57,3 +63,6 @@ async def home(request: Request):
     print
     title = 'Finca La Marina'
     return templates.TemplateResponse("datos.html",{"request": request, "title": title})
+
+
+session.close()

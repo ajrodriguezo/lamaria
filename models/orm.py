@@ -72,7 +72,7 @@ class Database(Base):
 
 
 for c in range(1, 21):
-    setattr(Database, f'ciclo_{c}', Column(Float))
+    setattr(Database, f'semana_{c}', Column(Float))
 
 
     

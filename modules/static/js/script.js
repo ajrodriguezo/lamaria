@@ -14,6 +14,10 @@ var ctx = document.getElementById('myChart').getContext('2d');
 
 var datos_grafica = document.getElementById('datos_grafica').dataset.variable;
 console.log(datos_grafica);
+console.log(typeof datos_grafica);
+
+var arreglo_grafica = JSON.parse(datos_grafica);
+console.log(typeof arreglo_grafica);
 
 var myChart = new Chart(ctx, {
     type: 'scatter',

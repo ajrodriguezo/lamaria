@@ -12,18 +12,15 @@ image.style.clipPath = `polygon(0 ${yCoordinate}%, 100% ${yCoordinate}%, 100% 10
 
 var ctx = document.getElementById('myChart').getContext('2d');
 
+var datos_grafica = document.getElementById('datos_grafica').dataset.variable;
+console.log(datos_grafica);
+
 var myChart = new Chart(ctx, {
     type: 'scatter',
     data: {
         datasets: [{
             label: 'Ciclo 1',
-            data: [
-                { x: 1, y: 70 },
-                { x: 2, y: 140 },
-                { x: 3, y: 400 },
-                { x: 4, y: 1400 },
-                { x: 5, y: 2500 }
-            ],
+            data: datos_grafica,
             backgroundColor: 'rgba(75, 192, 192, 0.5)',
             borderColor: 'rgba(75, 192, 192, 1)',
             borderWidth: 1

@@ -56,7 +56,7 @@ Database.add({
     'fecha': fecha_actual,
     'semana_1': 0,
     'semana_2': 1,
-    'semana_3': 5,
+    'semana_3': 50,
     'semana_4': 3
 })
 

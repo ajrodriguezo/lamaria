@@ -10,7 +10,7 @@ def suma_total(datos_dict):
     vec_suma = [
     i if i != None else np.nan for k, i in datos_dict.items() if "semana" in k
     ]
-    return np.nansum(vec_suma)
+    return float(np.nansum(vec_suma))
 
 def ajustar_grafica(datos_dict):
     acumulador = 0
@@ -21,5 +21,4 @@ def ajustar_grafica(datos_dict):
                 acumulador += i
             vec_grafica.append({"x":  n, "y": acumulador})
             # " ".join(k.split("_"))
-    print(vec_grafica)
     return vec_grafica

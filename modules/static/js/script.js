@@ -1,7 +1,9 @@
 document.addEventListener("DOMContentLoaded", function() {
   // Obtén la referencia a la imagen y ajusta el clip-path
 var image = document.getElementById("image-1");
-var porcentajeVisible = 85; 
+
+var total_ciclo_str = document.getElementById('total_ciclo').dataset.variable;
+var porcentajeVisible = parseInt(total_ciclo_str, 10);
 
 // Calcula la coordenada y para el porcentaje dado
 var yCoordinate = 100 - porcentajeVisible;
@@ -15,6 +17,7 @@ var ctx = document.getElementById('myChart').getContext('2d');
 var datos_grafica = document.getElementById('datos_grafica').dataset.variable;
 datos_grafica = datos_grafica.replace(/'/g, '"');
 var arreglo_grafica = JSON.parse(datos_grafica);
+
 
 var myChart = new Chart(ctx, {
     type: 'scatter',

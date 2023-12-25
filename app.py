@@ -77,11 +77,13 @@ def home(request: Request):
     lastId = Database.getLastId()
 
     if lastId:
-        result_dict = helpers.obj2dict(lastId)
-
-    print(result_dict)
-
-    return templates.TemplateResponse("main.html",{"request": request, "title": title})
+        result_dict, total_ciclo  = helpers.obj2dict(lastId)
+    else:
+        print("No hay resultados")
+        result_dict["error"] = "No hay resultados"
+        total_ciclo = 0
+    return templates.TemplateResponse("main.html",{"request": request, "title": title, 
+                                                   "datos_grafica": result_dict, "total_ciclo": total_ciclo})
 
 ## Ingreso Datos
 @app.get("/LaMaria/ingresoDatos")

@@ -55,9 +55,9 @@ Database.add({
     'ciclo_id': 'ciclo_test2',
     'fecha': fecha_actual,
     'semana_1': 0,
-    'semana_2': 150,
-    'semana_3': 500,
-    'semana_4': 300
+    'semana_2': 1,
+    'semana_3': 5,
+    'semana_4': 3
 })
 
 Database.update(ciclo_id = 'ciclo_test2', dict_update= {'semana_4': 0})

@@ -13,18 +13,15 @@ image.style.clipPath = `polygon(0 ${yCoordinate}%, 100% ${yCoordinate}%, 100% 10
 var ctx = document.getElementById('myChart').getContext('2d');
 
 var datos_grafica = document.getElementById('datos_grafica').dataset.variable;
-console.log(datos_grafica);
-console.log(typeof datos_grafica);
-
+datos_grafica = datos_grafica.replace(/'/g, '"');
 var arreglo_grafica = JSON.parse(datos_grafica);
-console.log(typeof arreglo_grafica);
 
 var myChart = new Chart(ctx, {
     type: 'scatter',
     data: {
         datasets: [{
             label: 'Ciclo 1',
-            data: datos_grafica,
+            data: arreglo_grafica,
             backgroundColor: 'rgba(75, 192, 192, 0.5)',
             borderColor: 'rgba(75, 192, 192, 1)',
             borderWidth: 1

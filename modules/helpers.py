@@ -15,11 +15,11 @@ def suma_total(datos_dict):
 def ajustar_grafica(datos_dict):
     acumulador = 0
     vec_grafica = []
-    for k,i in datos_dict.items():
+    for n, (k,i) in enumerate(datos_dict.items()):
         if "semana" in k:
             if i != None:
                 acumulador += i
-            vec_grafica.append({'x': " ".join(k.split("_")) , 'y': acumulador})
-
+            vec_grafica.append({"x":  n, "y": acumulador})
+            # " ".join(k.split("_"))
     print(vec_grafica)
     return vec_grafica

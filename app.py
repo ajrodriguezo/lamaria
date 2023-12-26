@@ -138,3 +138,14 @@ async def home(request: Request):
     title = 'Finca La Marina'
     return templates.TemplateResponse("datos.html",{"request": request, "title": title})
 
+@app.post("/LaMaria/ingresoDatos")
+async def home(request: Request, grsemana: int = Form(...), precioseman: int = Form(...), semana: int = Form(...)):
+    title = 'Finca La Marina'
+    
+    # Procesar los datos aquí si es necesario
+    print("Gr Acumulados:", grsemana)
+    print("Precio Promedio:", precioseman)
+    print("Número de Semana:", semana)
+
+    return templates.TemplateResponse("datos.html",{"request": request, "title": title})
+

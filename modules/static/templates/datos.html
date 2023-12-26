@@ -51,26 +51,36 @@
         text-align: center;">
 
             
-            <form>
+            <form id="datosForm" method="post" action="/LaMaria/ingresoDatos">
                 <label for="numero"></label>
-                <input type="number" id="grsemana" name="numero" min="0" max="100" step="1" required>
+                <input type="number" id="grsemana" name="grsemana" min="0" max="100" step="1" required>
                 <h3>gr acumulados</h3>
-            </form>
 
-            <form>
                 <label for="numero"></label>
-                <input type="number" id="precioseman" name="numero" min="0" max="100" step="1" required>
+                <input type="number" id="precioseman" name="precioseman" min="0" max="100" step="1" required>
                 <h3>Precio promedio</h3>
-            </form>
 
-            <form>
                 <label for="numero"></label>
-                <input type="number" id="semana" name="numero" min="0" max="100" step="1" required>
+                <input type="number" id="semana" name="semana" min="0" max="100" step="1" required>
                 <h3>No. semana</h3>
+
+                <button type="button" class="my-button" id="guardardatossemana">Guardar Datos</button>
             </form>
 
+            <script>
+                // Obtén el botón por su identificador
+                var guardarDatosBtn = document.getElementById('guardardatossemana');
+        
+                // Agrega un event listener para el evento 'click'
+                guardarDatosBtn.addEventListener('click', function() {
+                    // Puedes agregar tu lógica aquí
+                    console.log('Botón clickeado');
+                    
+                    // También puedes enviar el formulario aquí si lo necesitas
+                    document.getElementById('datosForm').submit();
+                });
+            </script>
             
-            <button class="my-button" id="guardardatossemana">Guardar Datos</button>
 
         </div>
 

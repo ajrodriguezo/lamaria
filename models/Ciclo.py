@@ -41,7 +41,7 @@ class Ciclo(Base):
             if flag:
                 Ciclo.add(dict_ciclo)
                 Precios.add(dict_precio)
-                dict_gramo["semana_id"] = db.session.query(Precios).filter_by(precio_owner_id=id).first().semana_id
+                dict_gramo["id"] = db.session.query(Precios).filter_by(precio_owner_id=id).first().id
                 Gramos.add(dict_gramo)
             else:
                 new_interaction = cls(**dict_new)

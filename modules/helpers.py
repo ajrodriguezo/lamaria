@@ -34,5 +34,5 @@ def ajustar_grafica(datos_dict):
 def generate_semana_id():
     return str(uuid.uuid4())[:8]
 
-def generate_ciclo_id():
-    return "ciclo_test"
+def generate_ciclo_id(fecha):
+    return "ciclo_"+ fecha.strftime("%y/%m/%d") + "-" +  str(uuid.uuid4())[:3]

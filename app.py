@@ -208,11 +208,12 @@ async def enviar_booleano_endpoint2(request: Request, valor: dict):
     if True in col_activo:
         print("Error. Ya hay una")
     else:
+        fecha = datetime.now().date()
         try:
             Ciclo.add({
-                'ciclo_id': helpers.generate_ciclo_id(),
+                'ciclo_id': helpers.generate_ciclo_id(fecha),
                 'activa' : True,
-                'fecha_inicial': datetime.now().date(),
+                'fecha_inicial': fecha,
             })
         except Exception as e:
             print(e)

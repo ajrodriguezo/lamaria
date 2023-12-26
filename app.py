@@ -149,3 +149,15 @@ async def home(request: Request, grsemana: int = Form(...), precioseman: int = F
 
     return templates.TemplateResponse("datos.html",{"request": request, "title": title})
 
+@app.post("/LaMaria/ingresoDatos/CrearCiclo")
+async def enviar_booleano_endpoint2(request: Request, valor: dict):
+    valor_booleano = valor.get("valor")
+    print(f"Valor booleano recibido en el Endpoint 1: {valor_booleano}")
+    return {"message": "Valor booleano recibido exitosamente en el Endpoint 1"}
+
+@app.post("/LaMaria/ingresoDatos/FinalizarCiclo")
+async def enviar_booleano_endpoint2(request: Request, valor: dict):
+    valor_booleano = valor.get("valor")
+    print(f"Valor booleano recibido en el Endpoint 2: {valor_booleano}")
+    return {"message": "Valor booleano recibido exitosamente en el Endpoint 2"}
+

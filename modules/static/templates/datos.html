@@ -80,7 +80,7 @@
                     document.getElementById('datosForm').submit();
                 });
             </script>
-            
+
 
         </div>
 
@@ -102,6 +102,44 @@
             </select>
             <input type="submit" value="Enviar" />
         </form>
+
+        <button id="btnTrueEndpoint1" class="my-button">Inicio Ciclo </button>
+    <button id="btnTrueEndpoint2" class="my-button">Finalizar Ciclo</button>
+
+    <script>
+        // Obtener los botones por su identificador
+        var btnTrueEndpoint1 = document.getElementById('btnTrueEndpoint1');
+        var btnTrueEndpoint2 = document.getElementById('btnTrueEndpoint2');
+
+        // Agregar event listeners para los eventos 'click'
+        btnTrueEndpoint1.addEventListener('click', function() {
+            enviarBooleano(true, "/LaMaria/ingresoDatos/CrearCiclo");
+        });
+
+        btnTrueEndpoint2.addEventListener('click', function() {
+            enviarBooleano(true, "/LaMaria/ingresoDatos/FinalizarCiclo");
+        });
+
+        // Función para enviar el valor booleano al servidor
+        function enviarBooleano(valorBooleano, endpoint) {
+            // Crear una instancia de XMLHttpRequest
+            var xhr = new XMLHttpRequest();
+
+            // Configurar la solicitud POST al servidor
+            xhr.open("POST", endpoint, true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+
+            // Convertir el valor booleano a JSON y enviarlo
+            xhr.send(JSON.stringify({ valor: valorBooleano }));
+
+            // Puedes manejar la respuesta del servidor si es necesario
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    console.log("Respuesta del servidor:", xhr.responseText);
+                }
+            };
+        }
+    </script>
 
     </section>
 

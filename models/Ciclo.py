@@ -93,9 +93,13 @@ class Ciclo(Base):
     @classmethod
     def getLastId(cls):
         try:
-            # Consulta para obtener la última interacción por fecha descendente
-            last_interaction = db.session.query(cls).order_by(cls.fecha_inicial.desc()).first()
-            return last_interaction
+            last_active_row = (
+                db.session.query(cls)
+                .filter_by(activa=True)
+                .order_by(cls.fecha_inicial.desc())
+                .first()
+            )
+            return last_active_row
         except Exception as e:
             print("Error ", e)
             return None

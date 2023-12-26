@@ -1,15 +1,18 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Float, Date
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Float, Date, Time
 from sqlalchemy.orm import relationship
 from models import db
 import numpy as np
 
 Base = db.base
 
-class Database(Base):
-    __tablename__ = 'LaMariaCosecha'
-
+class Ciclo(Base):
+    __tablename__ = 'ciclo'
     ciclo_id = Column(String, primary_key = True)
-    fecha = Column(Date)
+    activa = Column(Boolean)
+    fecha_inicial = Column(Date)
+    fecha_final = Column(Date)
+
+    semana_id = relationship("Semana", back_populates="owner")
 
     #Acciones
     @classmethod
@@ -64,16 +67,16 @@ class Database(Base):
     def getLastId(cls):
         try:
             # Consulta para obtener la última interacción por fecha descendente
-            last_interaction = db.session.query(cls).order_by(cls.fecha.desc()).first()
+            last_interaction = db.session.query(cls).order_by(cls.fecha_inicial.desc()).first()
             return last_interaction
         except Exception as e:
             print("Error ", e)
             return None
         
 
-
+"""
 for c in range(1, 21):
-    setattr(Database, f'semana_{c}', Column(Float, default= np.nan))
-
+    setattr(Ciclo, f'semana_{c}', Column(Float, default= np.nan))
+"""
 
     

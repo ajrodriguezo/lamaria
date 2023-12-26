@@ -1,4 +1,6 @@
 import numpy as np
+import uuid
+
 def obj2dict(session_object):
     # Filtrar solo las claves que son columnas de la base de datos
     columnas_validas = [column.name for column in session_object.__table__.columns]
@@ -22,3 +24,9 @@ def ajustar_grafica(datos_dict):
             vec_grafica.append({"x":  n, "y": acumulador})
             # " ".join(k.split("_"))
     return vec_grafica
+
+def generate_semana_id():
+    return str(uuid.uuid4())[:8]
+
+def generate_ciclo_id():
+    return "ciclo_test"

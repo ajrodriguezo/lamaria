@@ -11,7 +11,8 @@ import warnings
 warnings.filterwarnings("ignore")
 
 from models.Ciclo import Ciclo
-from models.Semana import Semana
+from models.Precios import Precios
+from models.Gramos import Gramos
 from models import db
 from modules import helpers
 
@@ -42,11 +43,7 @@ db.base.metadata.create_all(bind = db.engine)
 
 # Example
 fecha_actual = datetime.now().date()
-"""
-Ciclo.add({
-    'ciclo_id': 'ciclo_test1',
-    'semana_id': [Semana(semana_id='CH001', gr_metro=10.0, precio_prom=100.0, fecha_inicial= fecha_actual - timedelta(days=1), fecha_final= fecha_actual + timedelta(days=1))]
-})
+
 """
 
 Ciclo.add({
@@ -55,15 +52,36 @@ Ciclo.add({
     'fecha_inicial': fecha_actual,
 })
 
-Semana.add({
-    "semana_id": "CH001",
-    "gr_metro": 10.0,
-    "precio_prom": 100.0,
+Precios.add({
+    "semana_1": 10.0,
 })
 
-#Ciclo.update(ciclo_id = 'ciclo_test2', dict_update= {'semana_4': 0})
+Gramos.add({
+    "semana_id":"ahjski",
+    "semana_1": 10.0
+})
+"""
 
-#Ciclo.delete(ciclo_id = 'ciclo_test1')
+Ciclo.add({
+    "ciclos":{
+        'ciclo_id': 'ciclo_test3',
+        'activa' : True,
+        'fecha_inicial': fecha_actual
+        },
+    "precio": {
+        "semana_1": 10.0,
+        'semana_2': 11.2,
+        'semana_3': 10.2,
+        'semana_4': 9.2
+    },
+    "gramo": {
+        "semana_1": 10.0,
+        'semana_2': 100,
+        'semana_3': 100,
+        'semana_4': 400
+    },
+})
+
 
 print("Ultima session", Ciclo.getLastId().ciclo_id, Ciclo.getLastId().fecha_inicial)
 

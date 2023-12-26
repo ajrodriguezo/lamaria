@@ -13,6 +13,7 @@ warnings.filterwarnings("ignore")
 from models.Ciclo import Ciclo
 from models.Precios import Precios
 from models.Gramos import Gramos
+from models import query
 from models import db
 from modules import helpers
 
@@ -60,7 +61,7 @@ Gramos.add({
     "semana_id":"ahjski",
     "semana_1": 10.0
 })
-"""
+
 
 Ciclo.add({
     "ciclos":{
@@ -95,7 +96,7 @@ print("Ultima session", Ciclo.getLastId().ciclo_id, Ciclo.getLastId().fecha_inic
 
 print("Ultima session. Precios", Precios.getById(Ciclo.getLastId().ciclo_id).precio_owner_id)
 print("Ultima session. Gramos", Gramos.getById(Ciclo.getLastId().ciclo_id).gramos_owner_id)
-
+"""
 
 ## Create templates
 app.mount("/static", StaticFiles(directory="modules/static"), name="static")
@@ -126,7 +127,8 @@ def home(request: Request):
         
     else:
         print("No hay resultados")
-        total_gr = 0
+        datos_grafica = [{}]
+        total_gr, prom_precio = 0, 0
     return templates.TemplateResponse("main.html",{"request": request, "title": title, 
                                                    "datos_grafica": datos_grafica, "total_gr": total_gr,
                                                    "prom_precio": prom_precio})
@@ -153,11 +155,54 @@ async def home(request: Request, grsemana: int = Form(...), precioseman: int = F
 async def enviar_booleano_endpoint2(request: Request, valor: dict):
     valor_booleano = valor.get("valor")
     print(f"Valor booleano recibido en el Endpoint 1: {valor_booleano}")
-    return {"message": "Valor booleano recibido exitosamente en el Endpoint 1"}
+
+    col_activo = query.getAllElementsColumn(Ciclo, "activa")
+    
+    print(col_activo)
+
+    if True in col_activo:
+        print("Error. Ya hay una")
+    else:
+        try:
+            Ciclo.add({
+                'ciclo_id': helpers.generate_ciclo_id(),
+                'activa' : True,
+                'fecha_inicial': datetime.now().date(),
+            })
+        except Exception as e:
+            print(e)
+            raise Exception("Error creacion ciclo")
+
+        print("Creacion exitosa")        
 
 @app.post("/LaMaria/ingresoDatos/FinalizarCiclo")
 async def enviar_booleano_endpoint2(request: Request, valor: dict):
     valor_booleano = valor.get("valor")
     print(f"Valor booleano recibido en el Endpoint 2: {valor_booleano}")
-    return {"message": "Valor booleano recibido exitosamente en el Endpoint 2"}
+    
+    col_id = query.getAllElementsColumn(Ciclo, "ciclo_id")
+    col_activo = query.getAllElementsColumn(Ciclo, "activa")
+    
+    tmp_ids, tmp_flag = [], []
+    if True in col_activo:
+        for id, f in zip(col_id, col_activo):
+            if f: tmp_ids.append(id); tmp_flag.append(f)
+
+        if len(tmp_ids) == 1 and len(tmp_flag) == 1:
+            # Actualizacion
+            try:
+                Ciclo.update(ciclo_id= tmp_ids[0], dict_update= {
+                    "activa": False,
+                    "fecha_final": datetime.now().date()
+                })
+                print("Actualizacion correcta")
+            except Exception as e:
+                print(e)
+                print("Error en la actualizacion")
+        else:
+            print("Error. Hay mas de una")
+    else:
+        print("Error. No hay")
+
+    
 

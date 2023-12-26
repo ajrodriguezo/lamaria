@@ -13,7 +13,6 @@ def suma_y_promedio(datos_dict):
         i if i is not None else np.nan for k, i in datos_dict.items() if "semana" in k
     ]
     
-    print("aaaaaaaaaaa", vec_suma)
     suma_total = np.nansum(vec_suma)
     cantidad_valores = len(vec_suma) - np.isnan(vec_suma).sum()
     

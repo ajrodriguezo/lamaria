@@ -51,8 +51,8 @@
 
         <div class="container" id="container-2">
             <div class="sub-container" id="sub-container-1">
-                <span id="gracumulados">Contenido 1</span>
-                <p>gr acumulados {{ total_gr }} </p>
+                <span id="gracumulados">{{ total_gr }}</span>
+                <p>gr acumulados </p>
             </div>
             <div class="sub-container" id="sub-container-2">
                 <span id="faltante">Contenido 2</span>
@@ -63,8 +63,8 @@
                 <p>Vendido a la fecha</p>
             </div>
             <div class="sub-container" id="sub-container-4">
-                <span id="promedioprecio">Contenido 4</span>
-                <p>Precio promedio por Kg {{ total_gr }}  </p>        
+                <span id="promedioprecio"> {{ prom_precio }}</span>
+                <p>Precio promedio por Kg </p>        
                 <div class="container " id="button-container">
                     <button>Generar pdf</button>
                 </div>

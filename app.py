@@ -105,8 +105,7 @@ def home(request: Request):
         print("No hay resultados")
         result_dict["error"] = "No hay resultados"
         total_ciclo = 0
-    return templates.TemplateResponse("main.html",{"request": request, "title": title, 
-                                                   "datos_grafica": datos_grafica, "total_ciclo": total_ciclo})
+    return templates.TemplateResponse("main.html",{"request": request, "title": title, "datos_grafica": datos_grafica, "total_ciclo": total_ciclo})
 
 ## Ingreso Datos
 @app.get("/LaMaria/ingresoDatos")

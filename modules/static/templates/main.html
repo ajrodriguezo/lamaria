@@ -17,16 +17,20 @@
             <h1 id="site-title">{{title}}</h1>
         </div>
 
-        <div id="navigation">
-            <input type="checkbox" id="menu">
-            <label for="menu">☰</label>
-            <ul>
-                <li><a href=/LaMaria/home id="nav-home">Inicio</a></li>
-                <li><a href=/LaMaria/ingresoDatos id="nav-datos">Datos</a></li>
-            </ul>
+        <div id="mySidebar" class="sidebar">
+            <a href="{{url_for('static', path='/js/script.js')}}" class="closebtn" onclick="closeNav()">×</a>
+            <a href="#">About</a>
+            <a href="#">Services</a>
+            <a href="#">Clients</a>
+            <a href="#">Contact</a>
+        </div>
+    
+        <div id="slide">
+            <button class="openbtn" onclick="openNav()">☰ Open Sidebar</button>  
         </div>
 
     </header>
+
 
     <main>
 

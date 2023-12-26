@@ -10,7 +10,8 @@ import logging
 import warnings
 warnings.filterwarnings("ignore")
 
-from models.orm import Database
+from models.Ciclo import Ciclo
+from models.Semana import Semana
 from models import db
 from modules import helpers
 
@@ -41,30 +42,30 @@ db.base.metadata.create_all(bind = db.engine)
 
 # Example
 fecha_actual = datetime.now().date()
-
-Database.add({
+"""
+Ciclo.add({
     'ciclo_id': 'ciclo_test1',
-    'fecha': fecha_actual - timedelta(days=1),
-    'semana_1': 10,
-    'semana_2': 100,
-    'semana_3': 100,
-    'semana_4': 400
+    'semana_id': [Semana(semana_id='CH001', gr_metro=10.0, precio_prom=100.0, fecha_inicial= fecha_actual - timedelta(days=1), fecha_final= fecha_actual + timedelta(days=1))]
 })
+"""
 
-Database.add({
+Ciclo.add({
     'ciclo_id': 'ciclo_test2',
-    'fecha': fecha_actual,
-    'semana_1': 0,
-    'semana_2': 1,
-    'semana_3': 50,
-    'semana_4': 3
+    'activa' : True,
+    'fecha_inicial': fecha_actual,
 })
 
-Database.update(ciclo_id = 'ciclo_test2', dict_update= {'semana_4': 0})
+Semana.add({
+    "semana_id": "CH001",
+    "gr_metro": 10.0,
+    "precio_prom": 100.0,
+})
 
-Database.delete(ciclo_id = 'ciclo_test1')
+#Ciclo.update(ciclo_id = 'ciclo_test2', dict_update= {'semana_4': 0})
 
-print("Ultima session", Database.getLastId().ciclo_id, Database.getLastId().fecha)
+#Ciclo.delete(ciclo_id = 'ciclo_test1')
+
+print("Ultima session", Ciclo.getLastId().ciclo_id, Ciclo.getLastId().fecha_inicial)
 
 ## Create templates
 app.mount("/static", StaticFiles(directory="modules/static"), name="static")
@@ -74,7 +75,7 @@ templates = Jinja2Templates(directory="modules/static/templates")
 @app.get("/LaMaria/home")
 def home(request: Request):
     title = 'Finca La Marina'
-    lastId = Database.getLastId()
+    lastId = Ciclo.getLastId()
 
     if lastId:
         result_dict = helpers.obj2dict(lastId)

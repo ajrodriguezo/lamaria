@@ -2,17 +2,17 @@ from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Float, Date
 from sqlalchemy.orm import relationship
 from models import db
 import numpy as np
+from modules import helpers
 
 Base = db.base
 
-class Semana(Base):
-    __tablename__ = 'semana'
-    semana_id = Column(String, primary_key=True)
-    gr_metro = Column(Float)
-    precio_prom = Column(Float)
+class Precios(Base):
+    __tablename__ = 'precio'
+    semana_id = Column(String, primary_key=True, index=True, 
+                       default = helpers.generate_semana_id)
     
-    ciclos_id = Column(String, ForeignKey("ciclo.ciclo_id"))
-    owner = relationship("Ciclo", back_populates="semana_id")
+    precio_owner_id = Column(String, ForeignKey("ciclo.ciclo_id"))
+    precio_owner = relationship("Ciclo", back_populates="precio_id")
 
     #Acciones
     @classmethod
@@ -26,3 +26,6 @@ class Semana(Base):
             print("Error ", e)
             db.session.rollback()
             return "Error en la creación"
+        
+for c in range(1, 21):
+    setattr(Precios, f'semana_{c}', Column(Float, default= np.nan))

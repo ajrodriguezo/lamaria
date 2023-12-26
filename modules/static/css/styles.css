@@ -12,8 +12,16 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 20px;
-  text-align: center;
 }
+
+#page-footer {
+  padding: 10px;
+  text-align: center;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
 
 #branding {
   flex: 1; /* Toma el espacio necesario para el branding */
@@ -30,9 +38,7 @@ body {
 main {
   display: flex;
   justify-content: space-around;
-  
   flex-wrap: wrap;
-  padding: 20px;
 }
 
 .container {
@@ -50,13 +56,6 @@ main {
 }
 
 /* Estilos para el pie de página */
-#page-footer {
-  padding: 10px;
-  text-align: center;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-}
 
 #image-1 {
   width: 100%; /* Ajusta el ancho de la imagen al 100% del contenedor */
@@ -76,22 +75,20 @@ main {
   /* Puedes agregar más estilos según tus necesidades */
 }
 
-/* The sidepanel menu */
-.sidepanel {
-  height: 250px; /* Specify a height */
-  width: 0; /* 0 width - change this with JavaScript */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Stay on top */
+.sidebar {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
   top: 0;
   left: 0;
-  background-color: #111; /* Black*/
-  overflow-x: hidden; /* Disable horizontal scroll */
-  padding-top: 60px; /* Place content 60px from the top */
-  transition: 0.5s; /* 0.5 second transition effect to slide in the sidepanel */
+  background-color: #111;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
 }
 
-/* The sidepanel links */
-.sidepanel a {
+.sidebar a {
   padding: 8px 8px 8px 32px;
   text-decoration: none;
   font-size: 25px;
@@ -100,13 +97,11 @@ main {
   transition: 0.3s;
 }
 
-/* When you mouse over the navigation links, change their color */
-.sidepanel a:hover {
+.sidebar a:hover {
   color: #f1f1f1;
 }
 
-/* Position and style the close button (top right corner) */
-.sidepanel .closebtn {
+.sidebar .closebtn {
   position: absolute;
   top: 0;
   right: 25px;
@@ -114,7 +109,6 @@ main {
   margin-left: 50px;
 }
 
-/* Style the button that is used to open the sidepanel */
 .openbtn {
   font-size: 20px;
   cursor: pointer;
@@ -126,4 +120,9 @@ main {
 
 .openbtn:hover {
   background-color: #444;
+}
+
+#boton {
+  transition: margin-left .5s;
+  padding: 16px;
 }

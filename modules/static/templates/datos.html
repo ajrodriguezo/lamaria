@@ -17,14 +17,27 @@
             <h1 id="site-title">{{title}}</h1>
         </div>
 
-        <div id="navigation">
-            <input type="checkbox" id="menu">
-            <label for="menu">☰</label>
-            <ul>
-                <li><a href=/LaMaria/home id="nav-home">Inicio</a></li>
-                <li><a href=/LaMaria/ingresoDatos id="nav-datos">Datos</a></li>
-            </ul>
+        <div id="mySidebar" class="sidebar">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+            <a href="/LaMaria/home">Inicio</a>
+            <a href="/LaMaria/ingresoDatos">Datos</a>
         </div>
+
+        <div id="boton">
+            <button class="openbtn" onclick="openNav()">☰</button>  
+        </div>
+
+        <script>
+            function openNav() {
+                document.getElementById("mySidebar").style.width = "250px";
+                document.getElementById("boton").style.marginLeft = "250px";
+            }
+
+            function closeNav() {
+                document.getElementById("mySidebar").style.width = "0";
+                document.getElementById("boton").style.marginLeft= "0";
+            }
+        </script>
 
     </header>
 
@@ -40,26 +53,26 @@
             
             <form>
                 <label for="numero"></label>
-                <input type="number" id="numero" name="numero" min="0" max="100" step="1" required>
+                <input type="number" id="grsemana" name="numero" min="0" max="100" step="1" required>
                 <h3>Título debajo de la entrada</h3>
             </form>
 
             <form>
                 <label for="numero"></label>
-                <input type="number" id="numero" name="numero" min="0" max="100" step="1" required>
+                <input type="number" id="precioseman" name="numero" min="0" max="100" step="1" required>
                 <h3>Título debajo de la entrada</h3>
             </form>
 
             <form>
                 <label for="numero"></label>
-                <input type="number" id="numero" name="numero" min="0" max="100" step="1" required>
+                <input type="number" id="semana" name="numero" min="0" max="100" step="1" required>
                 <h3>Título debajo de la entrada</h3>
             </form>
 
             
-            <button class="my-button">Guardar Datos</button>
+            <button class="my-button" id="guardardatossemana">Guardar Datos</button>
 
-        </div>
+        </div>s
 
     </section>
 

@@ -108,23 +108,25 @@ def home(request: Request):
     title = 'Finca La Marina'
     lastId = Ciclo.getLastId()
     if lastId:
+        
         id = lastId.ciclo_id
-        
-        ## Gramos
-        objGramos = Gramos.getById(id)
-        result_dict_gr = helpers.obj2dict(objGramos)
-        # Total
-        total_gr, _ = helpers.suma_y_promedio(result_dict_gr)
-        # Ajustes
-        datos_grafica = helpers.ajustar_grafica(result_dict_gr)
+        if Precios.getById(id):
+            
+            ## Gramos
+            objGramos = Gramos.getById(id)
+            result_dict_gr = helpers.obj2dict(objGramos)
+            # Total
+            total_gr, _ = helpers.suma_y_promedio(result_dict_gr)
+            # Ajustes
+            datos_grafica = helpers.ajustar_grafica(result_dict_gr)
 
-        ## Precio
-        objPrecio = Precios.getById(id)
-        result_dict_pr = helpers.obj2dict(objPrecio)
-        # Promedio
-        _ , prom_precio = helpers.suma_y_promedio(result_dict_gr)
+            ## Precio
+            objPrecio = Precios.getById(id)
+            result_dict_pr = helpers.obj2dict(objPrecio)
+            # Promedio
+            _ , prom_precio = helpers.suma_y_promedio(result_dict_gr)
 
-        
+        print("No se ha ingresado informacion")
     else:
         print("No hay resultados")
         datos_grafica = [{}]

@@ -1,0 +1,143 @@
+/* Aplicar fondo a toda la página */
+body {
+  background: rgb(63, 94, 251);
+  background: radial-gradient(circle, rgba(63, 94, 251, 1) 0%, rgba(27, 31, 97, 1) 100%);
+  color: #fff;
+  margin: 0; /* Elimina el margen predeterminado del body */
+}
+
+/* Estilos para el encabezado */
+#page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  text-align: center;
+}
+
+/* Estilos para el pie de página */
+#page-footer {
+  padding: 10px;
+  text-align: center;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+#branding {
+  flex: 1; /* Toma el espacio necesario para el branding */
+}
+
+#site-title {
+  margin: 0; /* Elimina el margen predeterminado */
+}
+
+#navigation {
+  flex: 1;
+  text-align: right; /* Alinea el contenido hacia la derecha */
+}
+
+ul {
+  display: none;
+  margin-top: 0;
+  padding: 0;
+  width: 200px;
+  text-align: center; /* Alinea la lista hacia la izquierda */
+  position: fixed;
+  top: 62px; /* Ajusta la posición superior según tus necesidades */
+  right: 22px;
+  z-index: 1000;
+}
+
+input:checked ~ ul {
+  display: block;
+}
+
+input {
+  display: none;
+}
+
+label {
+  box-sizing: border-box;
+  display: inline-block;
+  border: 2px solid black;
+  border-radius: 5px;
+  width: 40px;
+  height: 40px;
+  line-height: 35px;
+  font-weight: bold;
+  text-align: center;
+  user-select: none;
+  cursor: pointer; /* Agregado para indicar que es un elemento clickeable */
+}
+
+/* Estilo del botón cuando se pasa el mouse por encima */
+label:hover {
+  background: grey;
+}
+
+/* Estilo del botón cuando el menú está expandido */
+input:checked ~ label {
+  background: lightgrey;
+}
+
+li {
+  display: block;
+  background: lightgrey;
+  margin: 0;
+  padding: 10px;
+  list-style: none;
+  border-bottom: 1px solid grey;
+}
+
+nav ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+nav ul li {
+  display: inline;
+  margin-right: 20px;
+}
+
+#navigation ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  background-color: rgba(255, 255, 255, 0); /* Fondo transparente (ajusta el último valor según la opacidad que desees) */
+  border-radius: 10px; /* Bordes redondeados */
+  overflow: hidden; /* Para contener elementos hijos flotantes */
+}
+
+#navigation li {
+  background: rgb(11, 31, 132);
+  color: #fff;
+  margin: 0; /* Elimina el margen predeterminado del body */
+}
+
+#navigation a {
+  display: block;
+  padding: 15px;
+  text-decoration: none;
+  color: #fff; /* Color del texto */
+}
+
+#navigation a:hover {
+  background-color: #b0b0b0b5; /* Cambia el color de fondo al pasar el ratón sobre el enlace */
+}
+
+.my-button {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.my-button:hover {
+  background-color: #45a049;
+}
+.my-button:active {
+  background-color: #3e8e41;
+}

@@ -8,11 +8,18 @@ def obj2dict(session_object):
     datos_dict = {column: getattr(session_object, column) for column in columnas_validas}
     return datos_dict
 
-def suma_total(datos_dict):
+def suma_y_promedio(datos_dict):
     vec_suma = [
-    i if i != None else np.nan for k, i in datos_dict.items() if "semana" in k
+        i if i is not None else np.nan for k, i in datos_dict.items() if "semana" in k
     ]
-    return float(np.nansum(vec_suma))
+    
+    print("aaaaaaaaaaa", vec_suma)
+    suma_total = np.nansum(vec_suma)
+    cantidad_valores = len(vec_suma) - np.isnan(vec_suma).sum()
+    
+    promedio = suma_total / cantidad_valores if cantidad_valores > 0 else 0
+    
+    return suma_total, promedio
 
 def ajustar_grafica(datos_dict):
     acumulador = 0

@@ -82,8 +82,20 @@ Ciclo.add({
     },
 })
 
+Precios.update(ciclo_id= "ciclo_test3", dict_update= {
+    "semana_1": 7.0,
+})
+
+Gramos.update(ciclo_id= "ciclo_test3", dict_update= {
+    "semana_1": 110
+})
+
 
 print("Ultima session", Ciclo.getLastId().ciclo_id, Ciclo.getLastId().fecha_inicial)
+
+print("Ultima session. Precios", Precios.getById(Ciclo.getLastId().ciclo_id).precio_owner_id)
+print("Ultima session. Gramos", Gramos.getById(Ciclo.getLastId().ciclo_id).gramos_owner_id)
+
 
 ## Create templates
 app.mount("/static", StaticFiles(directory="modules/static"), name="static")
@@ -94,18 +106,30 @@ templates = Jinja2Templates(directory="modules/static/templates")
 def home(request: Request):
     title = 'Finca La Marina'
     lastId = Ciclo.getLastId()
-
     if lastId:
-        result_dict = helpers.obj2dict(lastId)
+        id = lastId.ciclo_id
+        
+        ## Gramos
+        objGramos = Gramos.getById(id)
+        result_dict_gr = helpers.obj2dict(objGramos)
         # Total
-        total_ciclo = helpers.suma_total(result_dict)
-        # Total
-        datos_grafica = helpers.ajustar_grafica(result_dict)
+        total_gr, _ = helpers.suma_y_promedio(result_dict_gr)
+        # Ajustes
+        datos_grafica = helpers.ajustar_grafica(result_dict_gr)
+
+        ## Precio
+        objPrecio = Precios.getById(id)
+        result_dict_pr = helpers.obj2dict(objPrecio)
+        # Promedio
+        _ , prom_precio = helpers.suma_y_promedio(result_dict_gr)
+
+        
     else:
         print("No hay resultados")
-        result_dict["error"] = "No hay resultados"
-        total_ciclo = 0
-    return templates.TemplateResponse("main.html",{"request": request, "title": title, "datos_grafica": datos_grafica, "total_ciclo": total_ciclo})
+        total_gr = 0
+    return templates.TemplateResponse("main.html",{"request": request, "title": title, 
+                                                   "datos_grafica": datos_grafica, "total_gr": total_gr,
+                                                   "prom_precio": prom_precio})
 
 ## Ingreso Datos
 @app.get("/LaMaria/ingresoDatos")

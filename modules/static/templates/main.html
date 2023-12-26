@@ -52,7 +52,7 @@
         <div class="container" id="container-2">
             <div class="sub-container" id="sub-container-1">
                 <span id="gracumulados">Contenido 1</span>
-                <p>gr acumulados</p>
+                <p>gr acumulados {{ total_gr }} </p>
             </div>
             <div class="sub-container" id="sub-container-2">
                 <span id="faltante">Contenido 2</span>
@@ -64,7 +64,7 @@
             </div>
             <div class="sub-container" id="sub-container-4">
                 <span id="promedioprecio">Contenido 4</span>
-                <p>Precio promedio por Kg</p>        
+                <p>Precio promedio por Kg {{ total_gr }}  </p>        
                 <div class="container " id="button-container">
                     <button>Generar pdf</button>
                 </div>
@@ -84,7 +84,7 @@
         <p>&copy; Finca La Marina</p>
         <!-- Variables ocultas -->
         <div id="datos_grafica" data-variable="{{ datos_grafica }}" style="display: none;"></div>
-        <div id="total_ciclo" data-variable="{{ total_ciclo }}" style="display: none;"></div>
+        <div id="total_ciclo" data-variable="{{ total_gr }}" style="display: none;"></div>
     </footer>
     
     <script src="{{url_for('static', path='/js/script.js')}}"></script>

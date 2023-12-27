@@ -24,11 +24,14 @@ def ajustar_grafica(datos_dict):
     acumulador = 0
     vec_grafica = []
     for n, (k,i) in enumerate(datos_dict.items()):
+        if n == 0: bf = i
         if "semana" in k:
             if i != None:
                 acumulador += i
             vec_grafica.append({"x":  n, "y": acumulador})
             # " ".join(k.split("_"))
+        if bf == None and i == None: break
+        bf = i
     return vec_grafica
 
 def generate_semana_id():

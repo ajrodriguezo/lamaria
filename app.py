@@ -130,6 +130,7 @@ def home(request: Request):
             # Otros
             gr_faltantes = gr_goal - total_gr
             vendido = total_gr * prom_precio
+            relacion_gr = int((total_gr * 100) / gr_goal)
             print("Extraccion correcta")
         else:
             print("No se ha ingresado informacion")
@@ -137,11 +138,13 @@ def home(request: Request):
         print("No hay resultados")
         datos_grafica = [{}]
         total_gr, prom_precio, gr_faltantes, vendido = 0, 0, 0, 0
+        relacion_gr = 0
     return templates.TemplateResponse("main.html",{"request": request, "title": title, 
                                                    "datos_grafica": datos_grafica, "total_gr": total_gr,
                                                    "prom_precio": prom_precio,
                                                    "gr_faltante": gr_faltantes,
-                                                   "vendido": vendido})
+                                                   "vendido": vendido,
+                                                   "relacion_gr": relacion_gr})
 
 ## Ingreso Datos
 @app.get("/LaMaria/ingresoDatos")

@@ -61,7 +61,7 @@ Gramos.add({
     "semana_id":"ahjski",
     "semana_1": 10.0
 })
-
+"""
 
 Ciclo.add({
     "ciclos":{
@@ -96,7 +96,7 @@ print("Ultima session", Ciclo.getLastId().ciclo_id, Ciclo.getLastId().fecha_inic
 
 print("Ultima session. Precios", Precios.getById(Ciclo.getLastId().ciclo_id).precio_owner_id)
 print("Ultima session. Gramos", Gramos.getById(Ciclo.getLastId().ciclo_id).gramos_owner_id)
-"""
+
 
 ## Create templates
 app.mount("/static", StaticFiles(directory="modules/static"), name="static")
@@ -111,7 +111,8 @@ def home(request: Request):
         
         id = lastId.ciclo_id
         if Precios.getById(id):
-            
+
+            gr_goal = 7000
             ## Gramos
             objGramos = Gramos.getById(id)
             result_dict_gr = helpers.obj2dict(objGramos)
@@ -126,14 +127,21 @@ def home(request: Request):
             # Promedio
             _ , prom_precio = helpers.suma_y_promedio(result_dict_gr)
 
-        print("No se ha ingresado informacion")
+            # Otros
+            gr_faltantes = gr_goal - total_gr
+            vendido = total_gr * prom_precio
+            print("Extraccion correcta")
+        else:
+            print("No se ha ingresado informacion")
     else:
         print("No hay resultados")
         datos_grafica = [{}]
-        total_gr, prom_precio = 0, 0
+        total_gr, prom_precio, gr_faltantes, vendido = 0, 0, 0, 0
     return templates.TemplateResponse("main.html",{"request": request, "title": title, 
                                                    "datos_grafica": datos_grafica, "total_gr": total_gr,
-                                                   "prom_precio": prom_precio})
+                                                   "prom_precio": prom_precio,
+                                                   "gr_faltante": gr_faltantes,
+                                                   "vendido": vendido})
 
 ## Ingreso Datos
 @app.get("/LaMaria/ingresoDatos")

@@ -30,12 +30,12 @@
         <script>
             function openNav() {
                 document.getElementById("mySidebar").style.width = "250px";
-                document.getElementById("boton").style.marginLeft = "250px";
+                document.getElementById("boton").style.marginRight= "250px";
             }
 
             function closeNav() {
                 document.getElementById("mySidebar").style.width = "0";
-                document.getElementById("boton").style.marginLeft= "0";
+                document.getElementById("boton").style.marginRight= "0";
             }
         </script>
 
@@ -45,26 +45,22 @@
         <h2>Datos de la semana</h2>
     </div>
 
-    <section style="display: flex; justify-content: space-around; padding: 20px;">
+    <section style="display: flex; justify-content: space-around; padding: 10px;">
 
-        <div id="datos_semana" style="    display: contents;
-        text-align: center;">
-
+        <div id="datos_semana" style="height: 35px; width: 95%; display: flex; justify-content: space-around;">
             
-            <form id="datosForm" method="post" action="/LaMaria/ingresoDatos">
-                <label for="numero"></label>
-                <input type="number" id="grsemana" name="grsemana" min="0" max="100" step="1" required>
-                <h3>gr acumulados</h3>
+            <form id="datosForm" method="post" action="/LaMaria/ingresoDatos" style="display: inline-flex; width: 100%; justify-content: space-around; align-items: center;">
 
-                <label for="numero"></label>
-                <input type="number" id="precioseman" name="precioseman" min="0" max="100" step="1" required>
-                <h3>Precio promedio</h3>
+                <label for="grsemana">gr acumulados</label>
+                <input type="number" id="grsemana" name="grsemana" placeholder="0 gr" min="0" max="100" step="1" required>
 
-                <label for="numero"></label>
-                <input type="number" id="semana" name="semana" min="0" max="100" step="1" required>
-                <h3>No. semana</h3>
+                <label for="precioseman">Precio promedio</label>
+                <input type="number" id="precioseman" name="precioseman" placeholder="0,0 €" min="0" max="500" step="0.1" required>
 
-                <button type="button" class="my-button" id="guardardatossemana">Guardar Datos</button>
+                <label for="semana">No. semana</label>
+                <input type="number" id="semana" name="semana" placeholder="1 - 20" min="0" max="20" step="1" required>
+
+                <button type="submit" class="my-button" id="guardardatossemana">Guardar Datos</button>
             </form>
 
             <script>
@@ -86,25 +82,34 @@
 
     </section>
 
-    <section style="display: flex; padding: 20px;">
+    <section style="display: block; justify-content: space-around; padding: 10px;">
 
-        <form action="#">
-            <label for="lang">Lenguaje</label>
-            <select name="lenguajes" id="lang" multiple>
-                <option value="php">PHP</option>
-                <option value="java">Java</option>
-                <option value="golang">Golang</option>
-                <option value="python">Python</option>
-                <option value="c#">C#</option>
-                <option value="C++">C++</option>
-                <option value="erlang">Erlang</option>
-                <option value="javascript">JavaScript</option>
-            </select>
-            <input type="submit" value="Enviar" />
-        </form>
+        <div id="finciclo" style=" width: 90%;display: inline-flex; align-items: center; padding: 20px;">
+            <label id="fechadefin" style="padding-inline: 20px;">Fecha fin de ciclo: DD/MM/AAAA </label>
+            <button id="btnTrueEndpoint2" class="my-button">Finalizar Ciclo</button>
+        </div>
 
-        <button id="btnTrueEndpoint1" class="my-button">Inicio Ciclo </button>
-    <button id="btnTrueEndpoint2" class="my-button">Finalizar Ciclo</button>
+        <div id="iniciocilo" style="width: 90%; display:inline-flex; align-items: center; padding: 20px;">
+            <label for="start" style="margin-right: 20px; margin-left: 20px;">Inicio de ciclo</label>
+            <input type="date" id="fechainicio" name="iniciodeciclo" style="margin-right: 20px;" />
+            <button id="btnTrueEndpoint1" class="my-button" style="padding-inline: 20px;">Inicio Ciclo </button>
+        </div>
+
+        <div style="margin: 20px;">
+            <h2>PDf por ciclo</h2>
+        </div>
+
+        <div id="iniciocilo" style="width: 90%; display:inline-flex; align-items: center; padding: 20px;">
+            <label for="iniciopdf" style="margin-right: 20px; margin-left: 20px;">Inicio de ciclo</label>
+            <input type="date" id="iniciopdf" name="iniciopdf" style="margin-right: 20px;" />
+
+            <label for="finalpdf" style="margin-right: 20px; margin-left: 20px;">Fin de ciclo</label>
+            <input type="date" id="finalpdf" name="finalpdf" style="margin-right: 20px;" />
+
+            <button id="btnTrueEndpoint1" class="my-button" style="padding-inline: 20px;">Generar pdf </button>
+        </div>
+        
+        
 
     <script>
         // Obtener los botones por su identificador
@@ -113,11 +118,17 @@
 
         // Agregar event listeners para los eventos 'click'
         btnTrueEndpoint1.addEventListener('click', function() {
-            enviarBooleano(true, "/LaMaria/ingresoDatos/CrearCiclo");
+            enviarBooleano(true, "/LaMaria/ingresoDatos/CrearCiclo");            
         });
 
         btnTrueEndpoint2.addEventListener('click', function() {
-            enviarBooleano(true, "/LaMaria/ingresoDatos/FinalizarCiclo");
+            var fechaActual = new Date();
+            var options = { year: 'numeric', month: 'long', day: 'numeric' };
+            var fechaFormateada = fechaActual.toLocaleDateString('es-ES', options);
+
+            // Actualizar el texto del elemento HTML    
+            document.getElementById("fechadefin").textContent = "Fecha fin  de ciclo: " + fechaFormateada;    
+            enviarBooleano(true, "/LaMaria/ingresoDatos/FinalizarCiclo"); 
         });
 
         // Función para enviar el valor booleano al servidor

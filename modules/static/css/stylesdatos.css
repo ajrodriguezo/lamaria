@@ -49,7 +49,7 @@ body {
 }
 
 .sidebar {
-  height: 100%;
+  border-radius: 5%;
   width: 0;
   position: fixed;
   z-index: 1;

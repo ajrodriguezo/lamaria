@@ -41,6 +41,13 @@
 
     </header>
 
+    {% if message_raise %}
+    <div class="alert">
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+        {{message_raise}}
+    </div>
+    {% endif %}
+
     <div style="margin: 20px;">
         <h2>Datos de la semana</h2>
     </div>
@@ -122,46 +129,66 @@
         
         
 
-    <script>
-        // Obtener los botones por su identificador
-        var btnTrueEndpoint1 = document.getElementById('btnTrueEndpoint1');
-        var btnTrueEndpoint2 = document.getElementById('btnTrueEndpoint2');
-
-        // Agregar event listeners para los eventos 'click'
-        btnTrueEndpoint1.addEventListener('click', function() {
-            enviarBooleano(true, "/LaMaria/ingresoDatos/CrearCiclo");            
-        });
-
-        btnTrueEndpoint2.addEventListener('click', function() {
-            var fechaActual = new Date();
-            var options = { year: 'numeric', month: 'long', day: 'numeric' };
-            var fechaFormateada = fechaActual.toLocaleDateString('es-ES', options);
-
-            // Actualizar el texto del elemento HTML    
-            document.getElementById("fechadefin").textContent = "Fecha fin  de ciclo: " + fechaFormateada;    
-            enviarBooleano(true, "/LaMaria/ingresoDatos/FinalizarCiclo"); 
-        });
-
-        // Función para enviar el valor booleano al servidor
-        function enviarBooleano(valorBooleano, endpoint) {
-            // Crear una instancia de XMLHttpRequest
-            var xhr = new XMLHttpRequest();
-
-            // Configurar la solicitud POST al servidor
-            xhr.open("POST", endpoint, true);
-            xhr.setRequestHeader("Content-Type", "application/json");
-
-            // Convertir el valor booleano a JSON y enviarlo
-            xhr.send(JSON.stringify({ valor: valorBooleano }));
-
-            // Puedes manejar la respuesta del servidor si es necesario
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState == 4 && xhr.status == 200) {
-                    console.log("Respuesta del servidor:", xhr.responseText);
-                }
-            };
-        }
-    </script>
+        <script>
+            // Obtener los botones por su identificador
+            var btnTrueEndpoint1 = document.getElementById('btnTrueEndpoint1');
+            var btnTrueEndpoint2 = document.getElementById('btnTrueEndpoint2');
+    
+            // Agregar event listeners para los eventos 'click'
+            btnTrueEndpoint1.addEventListener('click', function() {
+                var fechaInicio = document.getElementById('fechainicio').value;
+                var data = {
+                    flag: true,
+                    fechaInicio: fechaInicio
+                };  
+                console.log(data);
+                enviarDatos(data, "/LaMaria/ingresoDatos/CrearCiclo");            
+            });
+    
+            btnTrueEndpoint2.addEventListener('click', function() {
+                var fechaActual = new Date();
+                var options = { year: 'numeric', month: 'long', day: 'numeric' };
+                var fechaFormateada = fechaActual.toLocaleDateString('es-ES', options);
+    
+                // Actualizar el texto del elemento HTML    
+                document.getElementById("fechadefin").textContent = "Fecha fin  de ciclo: " + fechaFormateada;  
+                var data = {
+                    flag: true,
+                };  
+                enviarDatos(data, "/LaMaria/ingresoDatos/FinalizarCiclo"); 
+            });
+    
+            // Función para enviar el valor booleano al servidor
+            function enviarDatos(data, endpoint) {
+                // Crear una instancia de XMLHttpRequest
+                var xhr = new XMLHttpRequest();
+    
+                // Configurar la solicitud POST al servidor
+                xhr.open("POST", endpoint, true);
+                xhr.setRequestHeader("Content-Type", "application/json");
+    
+                // Convertir el valor booleano a JSON y enviarlo
+                var jsonData = JSON.stringify(data);
+    
+                // Puedes manejar la respuesta del servidor si es necesario
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        console.log("Respuesta del servidor:", );
+                    }
+                    if (xhr.readyState == 4 && xhr.status == 400) {
+                        try {
+                            var errorResponse = JSON.parse(xhr.responseText);
+                            window.alert("Error: " + errorResponse.detail);
+                            // O utilizar una biblioteca como SweetAlert para una mejor experiencia de usuario
+                            // swal("Error", errorResponse.detail, "error");
+                        } catch (error) {
+                            console.error('Error en la solicitud:', xhr.status);
+                        }
+                    }
+                };
+                xhr.send(jsonData);
+            }
+        </script>
 
     </section>
 

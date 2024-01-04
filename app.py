@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request, File, UploadFile, Form, status, WebSocket
+from fastapi import FastAPI, Request, File, UploadFile, Form, status, HTTPException
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -8,6 +8,10 @@ from pathlib import Path
 from datetime import datetime, timedelta
 import logging
 import warnings
+
+from starlette import status
+from starlette.routing import URL
+
 warnings.filterwarnings("ignore")
 
 from models.Ciclo import Ciclo
@@ -148,13 +152,13 @@ def home(request: Request):
 
 ## Ingreso Datos
 @app.get("/LaMaria/ingresoDatos")
-async def home(request: Request):
-    print
+async def datos(request: Request):
     title = 'Finca La Marina'
     return templates.TemplateResponse("datos.html",{"request": request, "title": title})
 
 @app.post("/LaMaria/ingresoDatos")
-async def home(request: Request, grsemana: int = Form(...), precioseman: int = Form(...), semana: int = Form(...)):
+async def datos(request: Request, grsemana: int = Form(...), precioseman: int = Form(...), semana: int = Form(...)):
+    
     title = 'Finca La Marina'
 
     print("Gr Acumulados:", grsemana)
@@ -211,8 +215,20 @@ async def home(request: Request, grsemana: int = Form(...), precioseman: int = F
 
 @app.post("/LaMaria/ingresoDatos/CrearCiclo")
 async def enviar_booleano_endpoint2(request: Request, valor: dict):
-    valor_booleano = valor.get("valor")
-    print(f"Valor booleano recibido en el Endpoint 1: {valor_booleano}")
+    data = valor
+    print(f"Valor booleano recibido en el Endpoint 1")
+    if data["fechaInicio"] != "":
+        fecha_actual = datetime.now().date()
+        date = helpers.verf_date( data["fechaInicio"] , fecha_actual)
+    else:
+        err = "Error, debe elegir una fecha de inicio de ciclo"
+        print(err)
+        raise HTTPException(status_code=400, detail=str(err))
+
+    if date is None:
+        err = f"Error, la fecha no debe ser mayor al dia de hoy {fecha_actual}"
+        print(err)
+        raise HTTPException(status_code=400, detail=str(err))
 
     col_activo = query.getAllElementsColumn(Ciclo, "activa")
     
@@ -221,12 +237,12 @@ async def enviar_booleano_endpoint2(request: Request, valor: dict):
     if True in col_activo:
         print("Error. Ya hay una")
     else:
-        fecha = datetime.now().date()
+        
         try:
             Ciclo.add({
-                'ciclo_id': helpers.generate_ciclo_id(fecha),
+                'ciclo_id': helpers.generate_ciclo_id(date),
                 'activa' : True,
-                'fecha_inicial': fecha,
+                'fecha_inicial': date,
             })
         except Exception as e:
             print(e)
@@ -236,7 +252,7 @@ async def enviar_booleano_endpoint2(request: Request, valor: dict):
 
 @app.post("/LaMaria/ingresoDatos/FinalizarCiclo")
 async def enviar_booleano_endpoint2(request: Request, valor: dict):
-    valor_booleano = valor.get("valor")
+    valor_booleano = valor 
     print(f"Valor booleano recibido en el Endpoint 2: {valor_booleano}")
     
     col_id = query.getAllElementsColumn(Ciclo, "ciclo_id")

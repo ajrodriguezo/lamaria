@@ -1,5 +1,6 @@
 import numpy as np
 import uuid
+from datetime import datetime
 
 def obj2dict(session_object):
     # Filtrar solo las claves que son columnas de la base de datos
@@ -38,4 +39,14 @@ def generate_semana_id():
     return str(uuid.uuid4())[:8]
 
 def generate_ciclo_id(fecha):
-    return "ciclo_"+ fecha.strftime("%y/%m/%d") + "-" +  str(uuid.uuid4())[:3]
+    print(fecha)
+    return "ciclo_"+ str(fecha) + "-" +  str(uuid.uuid4())[:3]
+
+def verf_date(date:str, current_date:datetime):
+    input_date = datetime.strptime(date, "%Y-%m-%d").date()
+
+    if input_date > current_date:
+        return None
+    else:
+        return input_date
+    

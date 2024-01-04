@@ -82,7 +82,7 @@ main {
   z-index: 1;
   top: 0;
   right: 0;
-  background-color: #111;
+  background-color: rgb(0, 16, 99);
   overflow-x: hidden;
   transition: 0.5s;
   padding-top: 60px;
@@ -112,17 +112,32 @@ main {
 .openbtn {
   font-size: 20px;
   cursor: pointer;
-  background-color: #111;
+  background-color: #11111100;
   color: white;
   padding: 10px 15px;
   border: none;
 }
 
 .openbtn:hover {
-  background-color: #444;
+  background-color: #00076ed8;
 }
 
 #boton {
   transition: margin-right .5s;
   padding: 16px;
+}
+
+.my-button {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.my-button:hover {
+  background-color: #45a049;
+}
+.my-button:active {
+  background-color: #3e8e41;
 }

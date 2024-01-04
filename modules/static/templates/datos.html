@@ -100,13 +100,24 @@
         </div>
 
         <div id="iniciocilo" style="width: 90%; display:inline-flex; align-items: center; padding: 20px;">
-            <label for="iniciopdf" style="margin-right: 20px; margin-left: 20px;">Inicio de ciclo</label>
-            <input type="date" id="iniciopdf" name="iniciopdf" style="margin-right: 20px;" />
 
-            <label for="finalpdf" style="margin-right: 20px; margin-left: 20px;">Fin de ciclo</label>
-            <input type="date" id="finalpdf" name="finalpdf" style="margin-right: 20px;" />
+            <form action=#>
+                <label for="cilopdf">Seleccione el ciclo:</label>
+                <select name="cilopdf" id="cilopdf">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                </select>
+                <input type="submit" value="Seleccionar">
 
-            <button id="btnTrueEndpoint1" class="my-button" style="padding-inline: 20px;">Generar pdf </button>
+                <label id="fechadeiniciopdf" style="padding-inline: 5px;">El cilo inicio el: DD/MM/AAAA </label>
+                <label id="fechadefinpdf" style="padding-inline: 10px;">El ciclo finalizo el: DD/MM/AAAA </label>
+
+            </form>
+
+            <button id="btnTrueEndpoint1" type="submit" class="my-button" style="padding-inline: 10px;">Generar pdf </button>
+            
         </div>
         
         

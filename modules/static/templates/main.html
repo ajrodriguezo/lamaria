@@ -7,6 +7,11 @@
     <link rel="stylesheet" href="{{url_for('static', path='/css/styles.css')}}">
     <title>{{title}}</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -46,7 +51,6 @@
 
         <div class="container" id="container-1">
             <img id = "image-1" src="{{url_for('static', path='imgs/color.png')}}" alt="Imagen 1">
-
         </div>
 
         <div class="container" id="container-2">
@@ -66,8 +70,23 @@
                 <span> {{ prom_precio }}</span>
                 <p>Precio promedio por Kg </p>        
                 <div class="container " id="button-container">
-                    <button class="my-button">Generar pdf</button>
+                    <button class="my-button"  onclick = "generarPDF()" >Generar pdf</button>
                 </div>
+                <img id = "fondopdf" src="{{url_for('static', path='imgs/Reporte.png')}}" alt="fondopdf" style="display: none;">
+
+                <script>
+                function generarPDF() {
+                    var element = document.getElementById("fondopdf");
+                    html2canvas(element).then(function(canvas) {
+                        var imgData = canvas.toDataURL('image/png');
+                        var doc = new jsPDF();
+                        doc.addImage(imgData, 'PNG', 0, 0);
+                        doc.save("Reporte.pdf");
+                    });
+                }
+            
+                </script> 
+
             </div>
         </div>
     

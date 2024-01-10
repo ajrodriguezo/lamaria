@@ -157,7 +157,7 @@ async def datos(request: Request):
     return templates.TemplateResponse("datos.html",{"request": request, "title": title})
 
 @app.post("/LaMaria/ingresoDatos")
-async def datos(request: Request, grsemana: int = Form(...), precioseman: int = Form(...), semana: int = Form(...)):
+async def datos(request: Request, grsemana: int = Form(...), precioseman: float = Form(...), semana: int = Form(...)):
     
     title = 'Finca La Marina'
 
@@ -217,16 +217,17 @@ async def datos(request: Request, grsemana: int = Form(...), precioseman: int = 
 async def enviar_booleano_endpoint2(request: Request, valor: dict):
     data = valor
     print(f"Valor booleano recibido en el Endpoint 1")
+    
     if data["fechaInicio"] != "":
         fecha_actual = datetime.now().date()
         date = helpers.verf_date( data["fechaInicio"] , fecha_actual)
     else:
-        err = "Error, debe elegir una fecha de inicio de ciclo"
+        err = "Debe elegir una fecha de inicio de ciclo"
         print(err)
         raise HTTPException(status_code=400, detail=str(err))
 
     if date is None:
-        err = f"Error, la fecha no debe ser mayor al dia de hoy {fecha_actual}"
+        err = f"La fecha no debe ser mayor al dia de hoy {fecha_actual}"
         print(err)
         raise HTTPException(status_code=400, detail=str(err))
 
@@ -235,7 +236,9 @@ async def enviar_booleano_endpoint2(request: Request, valor: dict):
     print(col_activo)
 
     if True in col_activo:
-        print("Error. Ya hay una")
+        err = "Ya existe un ciclo en curso"
+        print(err)
+        raise HTTPException(status_code=400, detail=str(err))
     else:
         
         try:
@@ -246,7 +249,9 @@ async def enviar_booleano_endpoint2(request: Request, valor: dict):
             })
         except Exception as e:
             print(e)
-            raise Exception("Error creacion ciclo")
+            err = "En la creacion ciclo. Por favor intentelo de nuevo"
+            print(err)
+            raise HTTPException(status_code=400, detail=str(err))
 
         print("Creacion exitosa")        
 
@@ -272,12 +277,16 @@ async def enviar_booleano_endpoint2(request: Request, valor: dict):
                 })
                 print("Actualizacion correcta")
             except Exception as e:
-                print(e)
-                print("Error en la actualizacion")
+                err = "Error en la actualizacion. Por favor intentelo de nuevo"
+                raise HTTPException(status_code=400, detail=str(err))
         else:
-            print("Error. Hay mas de una")
+            err = "Datos dañados"
+            print(err)
+            raise HTTPException(status_code=400, detail=str(err))
     else:
-        print("Error. No hay")
+        err = "No existe un ciclo en curso"
+        print(err)
+        raise HTTPException(status_code=400, detail=str(err))
 
     
 

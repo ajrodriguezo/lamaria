@@ -74,30 +74,30 @@
                 </div>
                 <img id = "fondopdf" src="{{url_for('static', path='imgs/Reporte.png')}}" alt="fondopdf" style="display: none;">
 
-    <script>
-        function generarPDF() {
-        // Obtén la imagen que se utilizará para crear el PDF.
-        var image = document.getElementById("fondopdf");
+        <script>
+            function generarPDF() {
+            // Obtén la imagen que se utilizará para crear el PDF.
+            var image = document.getElementById("fondopdf");
 
-        // Obtiene las dimensiones de la imagen.
-        var imgWidth = image.width;
-        var imgHeight = image.height;
+            // Obtiene las dimensiones de la imagen.
+            var imgWidth = image.width;
+            var imgHeight = image.height;
 
 
-        // Crea un nuevo documento PDF con las dimensiones de la imagen.
-        var pdf = new jsPDF({
-            orientation: 'l',
-            unit: "pt",
-            format: [imgWidth, imgHeight]
-        });
+            // Crea un nuevo documento PDF con las dimensiones de la imagen.
+            var pdf = new jsPDF({
+                orientation: 'l',
+                unit: "pt",
+                format: [imgWidth, imgHeight]
+            });
 
-        // Agrega la imagen al documento PDF.
-        pdf.addImage(image, "PNG", 0, 0, imgWidth, imgHeight);
+            // Agrega la imagen al documento PDF.
+            pdf.addImage(image, "PNG", 0, 0, imgWidth, imgHeight);
 
-        // Guarda el documento PDF.s
-        pdf.save("documento.pdf");
-    }
-    </script>
+            // Guarda el documento PDF.s
+            pdf.save("documento.pdf");
+        }
+        </script>
 
             </div>
         </div>

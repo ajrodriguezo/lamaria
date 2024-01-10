@@ -20,15 +20,20 @@ var arreglo_grafica = JSON.parse(datos_grafica);
 
 
 var myChart = new Chart(ctx, {
-    type: 'scatter',
+    type: 'line',
+    defaultFontSize: 18,
     data: {
         datasets: [{
             label: 'Ciclo 1',
             data: arreglo_grafica,
             backgroundColor: 'rgba(75, 192, 192, 0.5)',
             borderColor: 'rgba(75, 192, 192, 1)',
-            borderWidth: 1
-        }]
+            borderWidth: 1,
+
+        }],
+        font: {
+            size: 30
+        }
     },
     options: {
         scales: {

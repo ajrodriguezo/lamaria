@@ -151,9 +151,9 @@ def home(request: Request):
         relacion_gr = 0
     return templates.TemplateResponse("main.html",{"request": request, "title": title, 
                                                    "datos_grafica": datos_grafica, "total_gr": total_gr,
-                                                   "prom_precio": prom_precio,
+                                                   "prom_precio": round(prom_precio,2),
                                                    "gr_faltante": gr_faltantes,
-                                                   "vendido": vendido,
+                                                   "vendido": round(vendido,2),
                                                    "relacion_gr": relacion_gr})
 
 ## Ingreso Datos
@@ -292,31 +292,21 @@ async def enviar_booleano_endpoint2(request: Request, valor: dict):
     valor_booleano = valor 
     print(f"Valor booleano recibido en el Endpoint 2: {valor_booleano}")
     
-    col_id = query.getAllElementsColumn(Ciclo, "ciclo_id")
-    col_activo = query.getAllElementsColumn(Ciclo, "activa")
-    
-    tmp_ids, tmp_flag = [], []
-    if True in col_activo:
-        for id, f in zip(col_id, col_activo):
-            if f: tmp_ids.append(id); tmp_flag.append(f)
-
-        if len(tmp_ids) == 1 and len(tmp_flag) == 1:
-            # Actualizacion
-            try:
-                Ciclo.update(ciclo_id= tmp_ids[0], dict_update= {
-                    "activa": False,
-                    "fecha_final": datetime.now().date()
-                })
-                txt = f"Actualizacion correcta del clcio: { tmp_ids[0] }"
-                print(txt)
-                return {"success": True, "message": txt} 
-            except Exception as e:
-                err = "Error en la actualizacion. Por favor intentelo de nuevo"
-                raise HTTPException(status_code=400, detail=str(err))
-        else:
-            err = "Datos dañados"
-            print(err)
+    lastId = Ciclo.getLastActive()
+    if lastId:
+        id = lastId.ciclo_id        
+        try:
+            Ciclo.update(ciclo_id=id, dict_update= {
+                "activa": False,
+                "fecha_final": datetime.now().date()
+            })
+            txt = f"Actualizacion correcta del clcio: {id }"
+            print(txt)
+            return {"success": True, "message": txt} 
+        except Exception as e:
+            err = "Error en la actualizacion. Por favor intentelo de nuevo"
             raise HTTPException(status_code=400, detail=str(err))
+
     else:
         err = "No existe un ciclo en curso"
         print(err)

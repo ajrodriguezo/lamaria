@@ -55,37 +55,58 @@
 
         <div class="container" id="container-2">
             <div class="sub-container" id="sub-container-1">
-                <span> {{ total_gr }}</span>
+                <span id="total_gr"> {{ total_gr }}</span>
                 <p>gr acumulados </p>
             </div>
             <div class="sub-container" id="sub-container-2">
-                <span> {{ gr_faltante }} </span>
+                <span id="gr_faltante"> {{ gr_faltante }} </span>
                 <p> gr Faltantes</p>                
             </div>
             <div class="sub-container" id="sub-container-3">
-                <span> {{ vendido }} </span>
+                <span id="vendido"> {{ vendido }} </span>
                 <p>Vendido a la fecha</p>
             </div>
             <div class="sub-container" id="sub-container-4">
-                <span> {{ prom_precio }}</span>
-                <p>Precio promedio por Kg </p>        
+                <span id="prom_precio"> {{ prom_precio }}</span>
+                <p>Precio promedio por Kg </p>      
+                
                 <div class="container " id="button-container">
                     <button class="my-button"  onclick = "generarPDF()" >Generar pdf</button>
                 </div>
+
                 <img id = "fondopdf" src="{{url_for('static', path='imgs/Reporte.png')}}" alt="fondopdf" style="display: none;">
 
-                <script>
-                function generarPDF() {
-                    var element = document.getElementById("fondopdf");
-                    html2canvas(element).then(function(canvas) {
-                        var imgData = canvas.toDataURL('image/png');
-                        var doc = new jsPDF();
-                        doc.addImage(imgData, 'PNG', 0, 0);
-                        doc.save("Reporte.pdf");
-                    });
-                }
-            
-                </script> 
+        <script>
+            function generarPDF() {
+            // Obtén la imagen que se utilizará para crear el PDF.
+            var texto1 = document.getElementById("total_gr").textContent;
+            var image = document.getElementById("fondopdf");
+
+            // Obtiene las dimensiones de la imagen.
+            var imgWidth = image.width;
+            var imgHeight = image.height;
+
+
+            // Crea un nuevo documento PDF con las dimensiones de la imagen.
+            var pdf = new jsPDF({
+                orientation: 'l',
+                unit: "pt",
+                format: [imgWidth, imgHeight]
+            });
+
+            // Agrega la imagen al documento PDF.
+            pdf.addImage(image, "PNG", 0, 0, imgWidth, imgHeight);
+
+            // Agrega 4 textos encima de la imagen.
+            pdf.text(texto1, 50, 50);
+            pdf.text("Texto 2", 50, 70);
+            pdf.text("Texto 3", 50, 90);
+            pdf.text("Texto 4", 50, 110);
+
+            // Guarda el documento PDF.s
+            pdf.save("documento.pdf");
+        }
+        </script>
 
             </div>
         </div>

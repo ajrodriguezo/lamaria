@@ -102,6 +102,12 @@ print("Ultima session. Precios", Precios.getById(Ciclo.getLastId().ciclo_id).pre
 print("Ultima session. Gramos", Gramos.getById(Ciclo.getLastId().ciclo_id).gramos_owner_id)
 
 
+dict_normalzate = {
+    "grsemana": "gr acumulados",
+    "precioseman": "Precio promedio",
+    "semana": "No. semana"
+}
+
 ## Create templates
 app.mount("/static", StaticFiles(directory="modules/static"), name="static")
 templates = Jinja2Templates(directory="modules/static/templates")
@@ -110,7 +116,7 @@ templates = Jinja2Templates(directory="modules/static/templates")
 @app.get("/LaMaria/home")
 def home(request: Request):
     title = 'Finca La Marina'
-    lastId = Ciclo.getLastId()
+    lastId = Ciclo.getLastActive()
     if lastId:
         
         id = lastId.ciclo_id
@@ -129,7 +135,7 @@ def home(request: Request):
             objPrecio = Precios.getById(id)
             result_dict_pr = helpers.obj2dict(objPrecio)
             # Promedio
-            _ , prom_precio = helpers.suma_y_promedio(result_dict_gr)
+            _ , prom_precio = helpers.suma_y_promedio(result_dict_pr)
 
             # Otros
             gr_faltantes = gr_goal - total_gr
@@ -156,10 +162,18 @@ async def datos(request: Request):
     title = 'Finca La Marina'
     return templates.TemplateResponse("datos.html",{"request": request, "title": title})
 
-@app.post("/LaMaria/ingresoDatos")
-async def datos(request: Request, grsemana: int = Form(...), precioseman: float = Form(...), semana: int = Form(...)):
-    
-    title = 'Finca La Marina'
+
+@app.post("/LaMaria/ingresoDatos/actualizarSemana")
+async def actalizarSemana(request: Request, valores: dict): # int = Form(...), precioseman: float = Form(...), semana: int = Form(...)):
+    print(valores)
+    for val in valores:
+        if valores[val] == "":
+            err = f"Falta el parametro: {dict_normalzate[val]}"
+            raise HTTPException(status_code=400, detail=str(err))
+
+    grsemana = valores["grsemana"]
+    precioseman = valores["precioseman"]
+    semana = valores["semana"]
 
     print("Gr Acumulados:", grsemana)
     print("Precio Promedio:", precioseman)
@@ -175,16 +189,23 @@ async def datos(request: Request, grsemana: int = Form(...), precioseman: float 
                 })
             except Exception as e:
                 print(e)
-                print("Error actualizacion bd precio")
+                err = "En la actualización de datos. Por favor intentelo de nuevo"
+                print(err)
+                raise HTTPException(status_code=400, detail=str(err))
 
             try:
                 Gramos.update(ciclo_id = id, dict_update = {
                     f"semana_{semana}": grsemana
                 })
-                print("Se actualizo con exito")
+                
+                txt = f"Actualizacion correcta de la semana {semana} del clcio: {id}"
+                print(txt)
+
             except Exception as e:
                 print(e)
-                print("Error actualizacion bd gramos")
+                err = "En la actualización de datos. Por favor intentelo de nuevo"
+                print(err)
+                raise HTTPException(status_code=400, detail=str(err))
             
         else:
             try:
@@ -195,6 +216,9 @@ async def datos(request: Request, grsemana: int = Form(...), precioseman: float 
             except Exception as e:
                 print(e)
                 print("Error guardado bd precio")
+                err = "En la actualización de datos. Por favor intentelo de nuevo"
+                print(err)
+                raise HTTPException(status_code=400, detail=str(err))
 
             try:
                 Gramos.add({
@@ -203,15 +227,21 @@ async def datos(request: Request, grsemana: int = Form(...), precioseman: float 
                     f"semana_{semana}": grsemana
                 })
                 
-                print("Se guardo con exito")
+                txt = f"Actualizacion correcta de la semana {semana} del clcio: {id}"
+                print(txt)
             except Exception as e:
                 print(e)
-                print("Error guardado bd gramos")
+                err = "En la actualización de datos. Por favor intentelo de nuevo"
+                print(err)
+                raise HTTPException(status_code=400, detail=str(err))
 
     
-    else: print("Error, no hay ciclos activos")
+    else:
+        err = "En la actualización de datos. Por favor intentelo de nuevo"
+        print(err)
+        raise HTTPException(status_code=400, detail=str(err))
 
-    return templates.TemplateResponse("datos.html",{"request": request, "title": title})
+    return {"success": True, "message": txt}
 
 @app.post("/LaMaria/ingresoDatos/CrearCiclo")
 async def enviar_booleano_endpoint2(request: Request, valor: dict):
@@ -253,7 +283,9 @@ async def enviar_booleano_endpoint2(request: Request, valor: dict):
             print(err)
             raise HTTPException(status_code=400, detail=str(err))
 
-        print("Creacion exitosa")        
+        txt = f"Se creo correctamente el ciclo con fecha de inicio {date}"
+        print(txt)
+        return {"success": True, "message": txt}     
 
 @app.post("/LaMaria/ingresoDatos/FinalizarCiclo")
 async def enviar_booleano_endpoint2(request: Request, valor: dict):
@@ -275,7 +307,9 @@ async def enviar_booleano_endpoint2(request: Request, valor: dict):
                     "activa": False,
                     "fecha_final": datetime.now().date()
                 })
-                print("Actualizacion correcta")
+                txt = f"Actualizacion correcta del clcio: { tmp_ids[0] }"
+                print(txt)
+                return {"success": True, "message": txt} 
             except Exception as e:
                 err = "Error en la actualizacion. Por favor intentelo de nuevo"
                 raise HTTPException(status_code=400, detail=str(err))

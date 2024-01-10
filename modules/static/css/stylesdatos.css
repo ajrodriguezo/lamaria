@@ -120,3 +120,13 @@ body {
 .closebtn:hover {
   color: black;
   }
+
+.succespop {
+    width: 400px; /* Ajusta el ancho según tus preferencias */
+    max-width: 40%; /* Puedes usar un porcentaje máximo del ancho de la pantalla */
+}
+
+.alertpop {
+  width: 400px; /* Ajusta el ancho según tus preferencias */
+  max-width: 40%; /* Puedes usar un porcentaje máximo del ancho de la pantalla */
+}

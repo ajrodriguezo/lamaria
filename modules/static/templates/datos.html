@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="{{url_for('static', path='/css/stylesdatos.css')}}">
     <title>{{title}}</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -75,12 +76,22 @@
                 var guardarDatosBtn = document.getElementById('guardardatossemana');
         
                 // Agrega un event listener para el evento 'click'
-                guardarDatosBtn.addEventListener('click', function() {
-                    // Puedes agregar tu lógica aquí
+                guardarDatosBtn.addEventListener('click', function(event) {
+                event.preventDefault();
+                    
                     console.log('Botón clickeado');
+                    var datosForm = document.getElementById('datosForm');
+                    console.log(datosForm);
+                    var formData = new FormData(datosForm);
+                    var jsonData = JSON.stringify(Object.fromEntries(formData.entries()));
+                    
                     
                     // También puedes enviar el formulario aquí si lo necesitas
-                    document.getElementById('datosForm').submit();
+                    // document.getElementById('datosForm').submit();
+
+                    console.log(jsonData);
+                    enviarDatos(jsonData, "/LaMaria/ingresoDatos/actualizarSemana"); 
+
                 });
             </script>
 
@@ -141,8 +152,9 @@
                     flag: true,
                     fechaInicio: fechaInicio
                 };  
-                console.log(data);
-                enviarDatos(data, "/LaMaria/ingresoDatos/CrearCiclo");            
+                var jsonData = JSON.stringify(data);
+                console.log(jsonData);
+                enviarDatos(jsonData, "/LaMaria/ingresoDatos/CrearCiclo");            
             });
     
             btnTrueEndpoint2.addEventListener('click', function() {
@@ -155,7 +167,8 @@
                 var data = {
                     flag: true,
                 };  
-                enviarDatos(data, "/LaMaria/ingresoDatos/FinalizarCiclo"); 
+                var jsonData = JSON.stringify(data);
+                enviarDatos(jsonData, "/LaMaria/ingresoDatos/FinalizarCiclo"); 
             });
     
             // Función para enviar el valor booleano al servidor
@@ -167,18 +180,34 @@
                 xhr.open("POST", endpoint, true);
                 xhr.setRequestHeader("Content-Type", "application/json");
     
-                // Convertir el valor booleano a JSON y enviarlo
-                var jsonData = JSON.stringify(data);
-    
                 // Puedes manejar la respuesta del servidor si es necesario
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState == 4 && xhr.status == 200) {
-                        console.log("Respuesta del servidor:", );
+                xhr.onload = function () {
+                    if (xhr.status === 200) {
+                        var response = JSON.parse(xhr.responseText);
+                        console.log("Respuesta del servidor:", response);
+                        Swal.fire({
+                            icon: "success",
+                            title: "Exitoso",
+                            text: response.message,
+                            customClass: {
+                                popup: 'succespop', // Agrega una clase personalizada al contenedor modal
+                            }
+                            });
+                        } else {
+                        console.error('Error en la solicitud:', xhr.status);
                     }
                     if (xhr.readyState == 4 && xhr.status == 400) {
                         try {
                             var errorResponse = JSON.parse(xhr.responseText);
-                            window.alert("Error: " + errorResponse.detail);
+                            // window.alert("Error: " + errorResponse.detail);
+                            Swal.fire({
+                            icon: "error",
+                            title: "Error",
+                            text: errorResponse.detail,
+                            customClass: {
+                                popup: 'alertpop', // Agrega una clase personalizada al contenedor modal
+                            }
+                            });
                             // O utilizar una biblioteca como SweetAlert para una mejor experiencia de usuario
                             // swal("Error", errorResponse.detail, "error");
                         } catch (error) {
@@ -186,7 +215,7 @@
                         }
                     }
                 };
-                xhr.send(jsonData);
+                xhr.send(data);
             }
         </script>
 

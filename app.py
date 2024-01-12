@@ -5,12 +5,9 @@ from fastapi.templating import Jinja2Templates
 import asyncio
 import os
 from pathlib import Path
-from datetime import datetime, timedelta
+from datetime import datetime
 import logging
 import warnings
-
-from starlette import status
-from starlette.routing import URL
 
 warnings.filterwarnings("ignore")
 
@@ -21,11 +18,7 @@ from models import query
 from models import db
 from modules import helpers
 
-## Create directorys necessary
-# Path('temp').mkdir(parents=True, exist_ok=True)
 Path('logs').mkdir(parents=True, exist_ok=True)
-# Path('modules/backend/db').mkdir(parents=True, exist_ok=True)
-# Path('modules/backend/models').mkdir(parents=True, exist_ok=True)
 
 # Configure logging
 logging.basicConfig(filename = 'logs/lamaria.log')
@@ -86,21 +79,6 @@ Ciclo.add({
         'semana_4': 400
     },
 })
-
-Precios.update(ciclo_id= "ciclo_test3", dict_update= {
-    "semana_1": 7.0,
-})
-
-Gramos.update(ciclo_id= "ciclo_test3", dict_update= {
-    "semana_1": 110
-})
-
-
-print("Ultima session", Ciclo.getLastId().ciclo_id, Ciclo.getLastId().fecha_inicial)
-
-print("Ultima session. Precios", Precios.getById(Ciclo.getLastId().ciclo_id).precio_owner_id)
-print("Ultima session. Gramos", Gramos.getById(Ciclo.getLastId().ciclo_id).gramos_owner_id)
-
 
 dict_normalzate = {
     "grsemana": "gr acumulados",
@@ -182,7 +160,26 @@ async def actalizarSemana(request: Request, valores: dict): # int = Form(...), p
     lastId = Ciclo.getLastActive()
     if lastId:
         id = lastId.ciclo_id
-        if Precios.getById(id):
+
+        objPrecios = Precios.getById(id)
+
+        dictPrecios = helpers.obj2dict(objPrecios)
+
+        valuesSemana = []
+
+        for key, value in dictPrecios.items():
+            if key == f"semana_{semana}":
+                break
+            elif "semana" in key and value is None:
+                valuesSemana.append(key.split("_")[1])
+
+        
+        if valuesSemana != []:
+            txt = " ".join(valuesSemana)
+            err = f"Falta información de las semanas {txt}; antes de ingresar la semana {semana}"
+            raise HTTPException(status_code=400, detail=str(err))
+
+        if objPrecios: 
             try:
                 Precios.update(ciclo_id = id, dict_update = {
                     f"semana_{semana}": precioseman

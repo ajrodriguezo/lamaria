@@ -89,7 +89,7 @@
         // Obtén la imagen que se utilizará para crear el PDF.
         var texto1 = document.getElementById("total_gr").textContent;
         var image = document.getElementById("fondopdf");
-        var image2 = document.getElementById("image-1");
+        //var image2 = document.getElementById("image-1");
 
         // Obtiene las dimensiones de la imagen.
         var imgWidth = image.width;
@@ -105,7 +105,7 @@
 
         // Agrega la imagen al documento PDF.
         pdf.addImage(image, "PNG", 0, 0, imgWidth, imgHeight);
-        pdf.addImage(image2, "PNG", 500, 500, 380, 375);
+        //pdf.addImage(image2, "PNG", 500, 500, 380, 375);
 
         pdf.setFont("arial", "bold"); // Cambia "times" a la fuente que desees
         pdf.setFontSize(35); // Cambia 12 al tamaño de fuente que desees
@@ -116,8 +116,17 @@
         pdf.text("Texto 3", 50, 90);
         pdf.text("Texto 4", 50, 110);
 
+        
+        var chartCanvas = document.getElementById('myChart');
+
+        html2canvas(chartCanvas, { backgroundColor: 'rgba(0,0,0,0)', scale: 250 }).then(function(canvas) {
+        
+        // Agrega la imagen del gráfico al PDF
+        pdf.addImage(imgData, 'PNG', 595, 353, 700, 500);
+
         // Guarda el documento PDF.s
         pdf.save("documento.pdf");
+    });
     }
     </script>
 

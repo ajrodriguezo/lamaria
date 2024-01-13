@@ -192,7 +192,7 @@ async def actalizarSemana(request: Request, valores: dict): # int = Form(...), p
 
             try:
                 Gramos.update(ciclo_id = id, dict_update = {
-                    f"semana_{semana}": grsemana
+                    f"semana_{semana}": round(float(grsemana) * (1000 / 80000), 2 )
                 })
                 
                 txt = f"Actualizacion correcta de la semana {semana} del clcio: {id}"

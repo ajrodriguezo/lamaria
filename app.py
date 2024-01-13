@@ -105,7 +105,7 @@ def home(request: Request):
             objGramos = Gramos.getById(id)
             result_dict_gr = helpers.obj2dict(objGramos)
             # Total
-            total_gr, _ = helpers.suma_y_promedio(result_dict_gr)
+            total_gr, prom_gr = helpers.suma_y_promedio(result_dict_gr)
             # Ajustes
             datos_grafica = helpers.ajustar_grafica(result_dict_gr)
 
@@ -119,6 +119,9 @@ def home(request: Request):
             gr_faltantes = gr_goal - total_gr
             vendido = total_gr * prom_precio
             relacion_gr = int((total_gr * 100) / gr_goal)
+
+
+
             print("Extraccion correcta")
         else:
             print("No se ha ingresado informacion")
@@ -134,7 +137,8 @@ def home(request: Request):
                                                    "prom_precio": round(prom_precio,2),
                                                    "gr_faltante": gr_faltantes,
                                                    "vendido": round(vendido,2),
-                                                   "relacion_gr": relacion_gr})
+                                                   "relacion_gr": relacion_gr,
+                                                   "prom_gr": round(prom_gr, 2)})
 
 ## Ingreso Datos
 @app.get("/LaMaria/ingresoDatos")

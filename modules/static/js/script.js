@@ -18,13 +18,16 @@ var datos_grafica = document.getElementById('datos_grafica').dataset.variable;
 datos_grafica = datos_grafica.replace(/'/g, '"');
 var arreglo_grafica = JSON.parse(datos_grafica);
 
+Chart.defaults.font.size = 16;
+Chart.defaults.font.family = 'Arial';
+Chart.defaults.color = '#eee127';
 
 var myChart = new Chart(ctx, {
     type: 'line',
     defaultFontSize: 18,
     data: {
         datasets: [{
-            label: 'Ciclo 1',
+            label: 'gr acumulados por semana',
             data: arreglo_grafica,
             backgroundColor: 'rgba(75, 192, 192, 0.5)',
             borderColor: 'rgba(75, 192, 192, 1)',
@@ -43,6 +46,10 @@ var myChart = new Chart(ctx, {
                 title: {
                     display: true,
                     text: 'Semanas'
+                },
+                ticks: {
+                    stepSize: 1, // Configura el tamaño del paso para que sea 1 (entero)
+                    precision: 0 // Configura la precisión para que no se muestren decimales
                 }
             },
             y: {
@@ -57,7 +64,7 @@ var myChart = new Chart(ctx, {
         plugins: {
             title: {
                 display: true,
-                text: 'Ciclo 1'
+                text: 'Ciclo de cosecha'
             }
         }
     }

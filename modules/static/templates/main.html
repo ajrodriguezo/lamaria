@@ -76,38 +76,6 @@
 
                 <img id = "fondopdf" src="{{url_for('static', path='imgs/Reporte.png')}}" alt="fondopdf" style="display: none;">
 
-        <script>
-            function generarPDF() {
-            // Obtén la imagen que se utilizará para crear el PDF.
-            var texto1 = document.getElementById("total_gr").textContent;
-            var image = document.getElementById("fondopdf");
-
-            // Obtiene las dimensiones de la imagen.
-            var imgWidth = image.width;
-            var imgHeight = image.height;
-
-
-            // Crea un nuevo documento PDF con las dimensiones de la imagen.
-            var pdf = new jsPDF({
-                orientation: 'l',
-                unit: "pt",
-                format: [imgWidth, imgHeight]
-            });
-
-            // Agrega la imagen al documento PDF.
-            pdf.addImage(image, "PNG", 0, 0, imgWidth, imgHeight);
-
-            // Agrega 4 textos encima de la imagen.
-            pdf.text(texto1, 50, 50);
-            pdf.text("Texto 2", 50, 70);
-            pdf.text("Texto 3", 50, 90);
-            pdf.text("Texto 4", 50, 110);
-
-            // Guarda el documento PDF.s
-            pdf.save("documento.pdf");
-        }
-        </script>
-
             </div>
         </div>
     
@@ -116,6 +84,42 @@
         <canvas id="myChart" style="padding: 20px;"></canvas>
     </div>
 
+    <script>
+        function generarPDF() {
+        // Obtén la imagen que se utilizará para crear el PDF.
+        var texto1 = document.getElementById("total_gr").textContent;
+        var image = document.getElementById("fondopdf");
+        var image2 = document.getElementById("image-1");
+
+        // Obtiene las dimensiones de la imagen.
+        var imgWidth = image.width;
+        var imgHeight = image.height;
+
+
+        // Crea un nuevo documento PDF con las dimensiones de la imagen.
+        var pdf = new jsPDF({
+            orientation: 'l',
+            unit: "pt",
+            format: [imgWidth, imgHeight]
+        });
+
+        // Agrega la imagen al documento PDF.
+        pdf.addImage(image, "PNG", 0, 0, imgWidth, imgHeight);
+        pdf.addImage(image2, "PNG", 500, 500, 380, 375);
+
+        pdf.setFont("arial", "bold"); // Cambia "times" a la fuente que desees
+        pdf.setFontSize(35); // Cambia 12 al tamaño de fuente que desees
+
+        // Agrega 4 textos encima de la imagen.
+        pdf.text(texto1, 232, 167);
+        pdf.text("Texto 2", 50, 70);
+        pdf.text("Texto 3", 50, 90);
+        pdf.text("Texto 4", 50, 110);
+
+        // Guarda el documento PDF.s
+        pdf.save("documento.pdf");
+    }
+    </script>
 
     </main>
 

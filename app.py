@@ -162,24 +162,24 @@ async def actalizarSemana(request: Request, valores: dict): # int = Form(...), p
         id = lastId.ciclo_id
 
         objPrecios = Precios.getById(id)
-
-        dictPrecios = helpers.obj2dict(objPrecios)
-
-        valuesSemana = []
-
-        for key, value in dictPrecios.items():
-            if key == f"semana_{semana}":
-                break
-            elif "semana" in key and value is None:
-                valuesSemana.append(key.split("_")[1])
-
-        
-        if valuesSemana != []:
-            txt = " ".join(valuesSemana)
-            err = f"Falta información de las semanas {txt}; antes de ingresar la semana {semana}"
-            raise HTTPException(status_code=400, detail=str(err))
-
+        print(objPrecios)
         if objPrecios: 
+            dictPrecios = helpers.obj2dict(objPrecios)
+            valuesSemana = []
+
+            for key, value in dictPrecios.items():
+                if key == f"semana_{semana}":
+                    break
+                elif "semana" in key and value is None:
+                    valuesSemana.append(key.split("_")[1])
+
+            
+            if valuesSemana != []:
+                txt = " ".join(valuesSemana)
+                err = f"Falta información de las semanas {txt}; antes de ingresar la semana {semana}"
+                raise HTTPException(status_code=400, detail=str(err))
+            
+
             try:
                 Precios.update(ciclo_id = id, dict_update = {
                     f"semana_{semana}": precioseman
@@ -205,10 +205,17 @@ async def actalizarSemana(request: Request, valores: dict): # int = Form(...), p
                 raise HTTPException(status_code=400, detail=str(err))
             
         else:
+            
+            if semana != "1":
+                err = f"El ciclo {id} debe iniciar con la semana 1 para continuar"
+                print(err)
+                raise HTTPException(status_code=400, detail=str(err))
+
+
             try:
                 Precios.add({
                     "precio_owner_id": id,
-                    f"semana_{semana}": precioseman
+                    f"semana_1": precioseman
                 })
             except Exception as e:
                 print(e)
@@ -221,7 +228,7 @@ async def actalizarSemana(request: Request, valores: dict): # int = Form(...), p
                 Gramos.add({
                     "id" : db.session.query(Precios).filter_by(precio_owner_id=id).first().id,
                     "gramos_owner_id": id,
-                    f"semana_{semana}": grsemana
+                    f"semana_1": grsemana
                 })
                 
                 txt = f"Actualizacion correcta de la semana {semana} del clcio: {id}"

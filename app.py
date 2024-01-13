@@ -127,6 +127,8 @@ def home(request: Request):
         datos_grafica = [{}]
         total_gr, prom_precio, gr_faltantes, vendido = 0, 0, 0, 0
         relacion_gr = 0
+    
+    print(datos_grafica)
     return templates.TemplateResponse("main.html",{"request": request, "title": title, 
                                                    "datos_grafica": datos_grafica, "total_gr": total_gr,
                                                    "prom_precio": round(prom_precio,2),

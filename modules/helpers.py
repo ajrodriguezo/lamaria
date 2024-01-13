@@ -22,16 +22,20 @@ def suma_y_promedio(datos_dict):
     return suma_total, promedio
 
 def ajustar_grafica(datos_dict):
-    acumulador = 0
+    acumulador, n = 0, 0
     vec_grafica = []
-    for n, (k,i) in enumerate(datos_dict.items()):
-        if n == 0: bf = i
+    for k,i in datos_dict.items():
         if "semana" in k:
+            if n == 0: n = 1; bf = i
+
+            if bf == None and i == None: break
+
             if i != None:
+                print(acumulador, i)
                 acumulador += i
-            vec_grafica.append({"x":  n, "y": acumulador})
+                n += 1
+            vec_grafica.append({"x":  n - 1 , "y": acumulador})
             # " ".join(k.split("_"))
-        if bf == None and i == None: break
         bf = i
     return vec_grafica
 

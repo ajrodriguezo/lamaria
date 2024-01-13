@@ -128,10 +128,9 @@ def home(request: Request):
     else:
         print("No hay resultados")
         datos_grafica = [{}]
-        total_gr, prom_precio, gr_faltantes, vendido = 0, 0, 0, 0
+        total_gr, prom_precio, gr_faltantes, vendido, prom_gr = 0, 0, 0, 0, 0
         relacion_gr = 0
     
-    print(datos_grafica)
     return templates.TemplateResponse("main.html",{"request": request, "title": title, 
                                                    "datos_grafica": datos_grafica, "total_gr": total_gr,
                                                    "prom_precio": round(prom_precio,2),
@@ -144,11 +143,16 @@ def home(request: Request):
 @app.get("/LaMaria/ingresoDatos")
 async def datos(request: Request):
     title = 'Finca La Marina'
-    return templates.TemplateResponse("datos.html",{"request": request, "title": title})
+    ciclos = query.getAllElementsColumn(Ciclo, "ciclo_id")
+    dict_ciclos = { ciclo : ciclo.split("_")[1] for ciclo in ciclos}
+    print(dict_ciclos)
+    return templates.TemplateResponse("datos.html",{"request": request, 
+                                                    "title": title, 
+                                                    "ciclos": dict_ciclos})
 
 
 @app.post("/LaMaria/ingresoDatos/actualizarSemana")
-async def actalizarSemana(request: Request, valores: dict): # int = Form(...), precioseman: float = Form(...), semana: int = Form(...)):
+async def actalizarSemana(request: Request, valores: dict):
     print(valores)
     for val in valores:
         if valores[val] == "":
@@ -323,4 +327,45 @@ async def enviar_booleano_endpoint2(request: Request, valor: dict):
         raise HTTPException(status_code=400, detail=str(err))
 
     
+@app.post("/LaMaria/ingresoDatos/busquedaId")
+async def actalizarSemana(request: Request, valores: dict):
+    print(valores)
+    id = valores["cilopdf"]
 
+    if Precios.getById(id):
+
+        gr_goal = 7000
+        ## Gramos
+        objGramos = Gramos.getById(id)
+        result_dict_gr = helpers.obj2dict(objGramos)
+        # Total
+        total_gr, prom_gr = helpers.suma_y_promedio(result_dict_gr)
+        # Ajustes
+        datos_grafica = helpers.ajustar_grafica(result_dict_gr)
+
+        ## Precio
+        objPrecio = Precios.getById(id)
+        result_dict_pr = helpers.obj2dict(objPrecio)
+        # Promedio
+        _ , prom_precio = helpers.suma_y_promedio(result_dict_pr)
+
+        # Otros
+        gr_faltantes = gr_goal - total_gr
+        vendido = total_gr * prom_precio
+        relacion_gr = int((total_gr * 100) / gr_goal)
+
+        return { "request": "request",
+                "datos_grafica": datos_grafica, "total_gr": total_gr,
+                "prom_precio": round(prom_precio,2),
+                "gr_faltante": gr_faltantes,
+                "vendido": round(vendido,2),
+                "relacion_gr": relacion_gr,
+                "prom_gr": round(prom_gr, 2)
+                }
+    else:
+        err = f"El ciclo {id} no tiene informacion guardada"
+        raise HTTPException(status_code=400, detail=str(err))
+    
+
+
+    return templates.TemplateResponse("main.html",)

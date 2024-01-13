@@ -119,24 +119,44 @@
 
         <div id="iniciocilo" style="width: 90%; display:inline-flex; align-items: center; padding: 20px;">
 
-            <form action=#>
+            <form action="#" id="formCiclo">
                 <label for="cilopdf">Seleccione el ciclo:</label>
                 <select name="cilopdf" id="cilopdf">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
+                    {% for id_ciclo, nombre_ciclo in ciclos.items() %}
+                        <option value="{{ id_ciclo }}">{{ nombre_ciclo }}</option>
+                    {% endfor %}
                 </select>
-                <input type="submit" value="Seleccionar">
-
+                <input type="button" value="Seleccionar" id="busquedaciclo">
+        
                 <label id="fechadeiniciopdf" style="padding-inline: 5px;">El cilo inicio el: DD/MM/AAAA </label>
-                <label id="fechadefinpdf" style="padding-inline: 10px;">El ciclo finalizo el: DD/MM/AAAA </label>
-
+                <label id="fechadefinpdf" style="padding-inline: 10px;">El ciclo finalizó el: DD/MM/AAAA </label>
             </form>
-
-            <button id="btnTrueEndpoint1" type="submit" class="my-button" style="padding-inline: 10px;">Generar pdf </button>
-            
+        
+            <button id="btnTrueEndpoint4" class="my-button" style="padding-inline: 10px;">Generar pdf</button>
+        
         </div>
+
+        <script>
+            // Obtén el botón por su identificador
+            var guardarDatosBtn = document.getElementById('busquedaciclo');
+        
+            // Agrega un event listener para el evento 'click'
+            guardarDatosBtn.addEventListener('click', function (event) {
+                event.preventDefault();
+        
+                console.log('Botón clickeado 2');
+                var datosForm = document.getElementById('formCiclo');
+                console.log(datosForm);
+                var formData = new FormData(datosForm);
+                var jsonData = JSON.stringify(Object.fromEntries(formData.entries()));
+        
+                // También puedes enviar el formulario aquí si lo necesitas
+                // document.getElementById('formCiclo').submit();
+        
+                console.log(jsonData);
+                enviarDatos(jsonData, "/LaMaria/ingresoDatos/busquedaId");
+            });
+        </script>
         
         
 
@@ -185,6 +205,9 @@
                     if (xhr.status === 200) {
                         var response = JSON.parse(xhr.responseText);
                         console.log("Respuesta del servidor:", response);
+                        if ("request" in response) {
+                            console.log("Values :", response );
+                        } else {
                         Swal.fire({
                             icon: "success",
                             title: "Exitoso",
@@ -193,8 +216,7 @@
                                 popup: 'succespop', // Agrega una clase personalizada al contenedor modal
                             }
                             });
-                        } else {
-                        console.error('Error en la solicitud:', xhr.status);
+                        }
                     }
                     if (xhr.readyState == 4 && xhr.status == 400) {
                         try {

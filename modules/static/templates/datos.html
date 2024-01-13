@@ -206,7 +206,21 @@
                         var response = JSON.parse(xhr.responseText);
                         console.log("Respuesta del servidor:", response);
                         if ("request" in response) {
-                            console.log("Values :", response );
+                            Swal.fire({
+                            title: 'Generar PDF',
+                            text: "El ciclo elegido es el: " + response.id +
+                                "\n.Fecha de inicio: " + response.fecha_init +
+                                "\n.Fecha de Final: " + response.fecha_finish +
+                                "\n¿Desea generar el PDF?",
+                            icon: 'question',
+                            showCancelButton: true,
+                            confirmButtonText: 'Generar PDF',
+                            cancelButtonText: 'Cancelar'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // Aquí puedes agregar la lógica para generar el PDF
+                                console.log('Generando PDF...');
+                            }});
                         } else {
                         Swal.fire({
                             icon: "success",

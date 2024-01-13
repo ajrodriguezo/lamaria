@@ -114,6 +114,19 @@ class Ciclo(Base):
             print("Error ", e)
             return None
         
+    @classmethod
+    def getSpecificId(cls, specific_id):
+        try:
+            specific_active_row = (
+                db.session.query(cls)
+                .filter_by(ciclo_id=specific_id)  # Asegúrate de ajustar el nombre de la columna ID según tu modelo
+                .first()
+            )
+            return specific_active_row
+        except Exception as e:
+            print("Error ", e)
+            return None
+        
 
 """
 for c in range(1, 21):

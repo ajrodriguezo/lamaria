@@ -354,7 +354,17 @@ async def actalizarSemana(request: Request, valores: dict):
         vendido = total_gr * prom_precio
         relacion_gr = int((total_gr * 100) / gr_goal)
 
+        objCiclo = Ciclo.getSpecificId(id)
+        print(objCiclo)
+        fecha_init = objCiclo.fecha_inicial
+        fecha_finish = "No tiene fecha establecida"
+        if objCiclo.fecha_final != None:
+            fecha_finish = objCiclo.fecha_final
+
         return { "request": "request",
+                "id": id,
+                "fecha_init":fecha_init,
+                "fecha_finish":fecha_finish,
                 "datos_grafica": datos_grafica, "total_gr": total_gr,
                 "prom_precio": round(prom_precio,2),
                 "gr_faltante": gr_faltantes,
@@ -366,6 +376,3 @@ async def actalizarSemana(request: Request, valores: dict):
         err = f"El ciclo {id} no tiene informacion guardada"
         raise HTTPException(status_code=400, detail=str(err))
     
-
-
-    return templates.TemplateResponse("main.html",)

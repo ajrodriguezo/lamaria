@@ -92,6 +92,8 @@
             var vendido = document.getElementById("vendido").textContent;
             var prom_precio = document.getElementById("prom_precio").textContent;
             var prom_gr = document.getElementById('prom_gr').dataset.variable;
+            var fecha_init = document.getElementById('fecha_init').dataset.variable;
+            var fecha_finish = document.getElementById('fecha_finish').dataset.variable;
 
             var image = document.getElementById("fondopdf");
 
@@ -111,7 +113,7 @@
             pdf.addImage(image, "PNG", 0, 0, imgWidth, imgHeight);
             //pdf.addImage(image2, "PNG", 500, 500, 380, 375);
 
-            pdf.setFont("arial", "bold"); // Cambia "times" a la fuente que desees
+            pdf.setFont("helvetica", "bold"); // Cambia "times" a la fuente que desees
             pdf.setFontSize(35); // Cambia 12 al tamaño de fuente que desees
 
             // Agrega 4 textos encima de la imagen.
@@ -119,6 +121,10 @@
             pdf.text(prom_gr, 950, 250);
             pdf.text(vendido, 125, 250);
             pdf.text(prom_precio, 700, 250);  
+
+            pdf.setFontSize(12); // Cambia 12 al tamaño de fuente que desees
+            pdf.text(fecha_init, 232, 95);  
+            pdf.text(fecha_finish, 415, 95); 
 
             var chartCanvas = document.getElementById('myChart');
 
@@ -143,6 +149,8 @@
         <div id="datos_grafica" data-variable="{{ datos_grafica }}" style="display: none;"></div>
         <div id="total_ciclo" data-variable="{{ relacion_gr }}" style="display: none;"></div>
         <span id="prom_gr" data-variable="{{ prom_gr }}" style="display: none;"></span>
+        <span id="fecha_init" data-variable="{{ fecha_init }}" style="display: none;"></span>
+        <span id="fecha_finish" data-variable="{{ fecha_finish }}" style="display: none;"></span>
     </footer>
     
     <script src="{{url_for('static', path='/js/script.js')}}"></script>

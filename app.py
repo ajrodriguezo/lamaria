@@ -120,7 +120,12 @@ def home(request: Request):
             vendido = total_gr * prom_precio
             relacion_gr = int((total_gr * 100) / gr_goal)
 
-
+            objCiclo = Ciclo.getSpecificId(id)
+            print(objCiclo)
+            fecha_init = objCiclo.fecha_inicial
+            fecha_finish = "No tiene fecha establecida"
+            if objCiclo.fecha_final != None:
+                fecha_finish = objCiclo.fecha_final
 
             print("Extraccion correcta")
         else:
@@ -130,8 +135,12 @@ def home(request: Request):
         datos_grafica = [{}]
         total_gr, prom_precio, gr_faltantes, vendido, prom_gr = 0, 0, 0, 0, 0
         relacion_gr = 0
+        fecha_finish = None
+        fecha_init = None
     
-    return templates.TemplateResponse("main.html",{"request": request, "title": title, 
+    return templates.TemplateResponse("main.html",{"request": request, "title": title,
+                                                   "fecha_init":fecha_init,
+                                                    "fecha_finish":fecha_finish, 
                                                    "datos_grafica": datos_grafica, "total_gr": total_gr,
                                                    "prom_precio": round(prom_precio,2),
                                                    "gr_faltante": gr_faltantes,

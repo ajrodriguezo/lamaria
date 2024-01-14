@@ -85,50 +85,53 @@
     </div>
 
     <script>
+
         function generarPDF() {
-        // Obtén la imagen que se utilizará para crear el PDF.
-        var texto1 = document.getElementById("total_gr").textContent;
-        var image = document.getElementById("fondopdf");
-        //var image2 = document.getElementById("image-1");
+            // Obtén la imagen que se utilizará para crear el PDF.
+            var total_gr = document.getElementById("total_gr").textContent;
+            var vendido = document.getElementById("vendido").textContent;
+            var prom_precio = document.getElementById("prom_precio").textContent;
+            var prom_gr = document.getElementById('prom_gr').dataset.variable;
 
-        // Obtiene las dimensiones de la imagen.
-        var imgWidth = image.width;
-        var imgHeight = image.height;
+            var image = document.getElementById("fondopdf");
+
+            // Obtiene las dimensiones de la imagen.
+            var imgWidth = image.width;
+            var imgHeight = image.height;
 
 
-        // Crea un nuevo documento PDF con las dimensiones de la imagen.
-        var pdf = new jsPDF({
-            orientation: 'l',
-            unit: "pt",
-            format: [imgWidth, imgHeight]
-        });
+            // Crea un nuevo documento PDF con las dimensiones de la imagen.
+            var pdf = new jsPDF({
+                orientation: 'l',
+                unit: "pt",
+                format: [imgWidth, imgHeight]
+            });
 
-        // Agrega la imagen al documento PDF.
-        pdf.addImage(image, "PNG", 0, 0, imgWidth, imgHeight);
-        //pdf.addImage(image2, "PNG", 500, 500, 380, 375);
+            // Agrega la imagen al documento PDF.
+            pdf.addImage(image, "PNG", 0, 0, imgWidth, imgHeight);
+            //pdf.addImage(image2, "PNG", 500, 500, 380, 375);
 
-        pdf.setFont("arial", "bold"); // Cambia "times" a la fuente que desees
-        pdf.setFontSize(35); // Cambia 12 al tamaño de fuente que desees
+            pdf.setFont("arial", "bold"); // Cambia "times" a la fuente que desees
+            pdf.setFontSize(35); // Cambia 12 al tamaño de fuente que desees
 
-        // Agrega 4 textos encima de la imagen.
-        pdf.text(texto1, 232, 167);
-        pdf.text("Texto 2", 50, 70);
-        pdf.text("Texto 3", 50, 90);
-        pdf.text("Texto 4", 50, 110);
+            // Agrega 4 textos encima de la imagen.
+            pdf.text(total_gr, 425, 250);
+            pdf.text(prom_gr, 950, 250);
+            pdf.text(vendido, 125, 250);
+            pdf.text(prom_precio, 700, 250);  
 
-        
-        var chartCanvas = document.getElementById('myChart');
+            var chartCanvas = document.getElementById('myChart');
 
-        html2canvas(chartCanvas, { backgroundColor: 'rgba(0,0,0,0)', scale: 5 }).then(function(canvas) {
-        var imgData = canvas.toDataURL('image/png');
-        
-        // Agrega la imagen del gráfico al PDF
-        pdf.addImage(imgData, 'PNG', 98 , 353, 600, 370);
+            html2canvas(chartCanvas, { backgroundColor: 'rgba(0,0,0,0)', scale: 9 }).then(function(canvas) {
+                var imgData = canvas.toDataURL('image/png');
+                
+                // Agrega la imagen del gráfico al PDF
+                pdf.addImage(imgData, 'PNG', 98 , 330, 750, 400);
 
-        // Guarda el documento PDF.s
-        pdf.save("documento.pdf");
-    });
-    }
+                // Guarda el documento PDF.s
+                pdf.save("documento.pdf");
+            });
+        }
     </script>
 
     </main>
@@ -139,6 +142,7 @@
         <!-- Variables ocultas -->
         <div id="datos_grafica" data-variable="{{ datos_grafica }}" style="display: none;"></div>
         <div id="total_ciclo" data-variable="{{ relacion_gr }}" style="display: none;"></div>
+        <span id="prom_gr" data-variable="{{ prom_gr }}" style="display: none;"></span>
     </footer>
     
     <script src="{{url_for('static', path='/js/script.js')}}"></script>

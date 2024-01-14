@@ -127,12 +127,8 @@
                     {% endfor %}
                 </select>
                 <input type="button" value="Seleccionar" id="busquedaciclo">
-        
-                <label id="fechadeiniciopdf" style="padding-inline: 5px;">El cilo inicio el: DD/MM/AAAA </label>
-                <label id="fechadefinpdf" style="padding-inline: 10px;">El ciclo finalizó el: DD/MM/AAAA </label>
+
             </form>
-        
-            <button id="btnTrueEndpoint4" class="my-button" style="padding-inline: 10px;">Generar pdf</button>
         
         </div>
 
@@ -157,8 +153,7 @@
                 enviarDatos(jsonData, "/LaMaria/ingresoDatos/busquedaId");
             });
         </script>
-        
-        
+
 
         <script>
             // Obtener los botones por su identificador
@@ -220,6 +215,7 @@
                             if (result.isConfirmed) {
                                 // Aquí puedes agregar la lógica para generar el PDF
                                 console.log('Generando PDF...');
+                                
                             }});
                         } else {
                         Swal.fire({

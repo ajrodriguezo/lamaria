@@ -81,7 +81,7 @@ Ciclo.add({
 })
 
 dict_normalzate = {
-    "grsemana": "gr acumulados",
+    "grsemana": "Kg acumulados",
     "precioseman": "Precio promedio",
     "semana": "No. semana"
 }

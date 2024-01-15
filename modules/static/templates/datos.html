@@ -16,6 +16,29 @@
 </head>
 
 <body>
+    <img id = "fondopdf" src="{{url_for('static', path='imgs/Reporte.png')}}" alt="fondopdf" style="display: none;">
+
+    <script>
+        var image = document.getElementById("fondopdf");
+
+        // Obtiene las dimensiones de la imagen.
+        var imgWidth = image.width;
+        var imgHeight = image.height;
+
+        var pdf;
+
+        // Crea un nuevo documento PDF con las dimensiones de la imagen.
+        pdf = new jsPDF({
+            orientation: 'l',
+            unit: "pt",
+            format: [imgWidth, imgHeight]
+        })
+
+        // Agrega la imagen al documento PDF.
+        pdf.addImage(image, "PNG", 0, 0, imgWidth, imgHeight);
+        //pdf.addImage(image2, "PNG", 500, 500, 380, 375);
+
+    </script>
 
     <header id="page-header">
 
@@ -124,7 +147,7 @@
 
         <div id="iniciocilo" style="width: 90%; display:inline-flex; align-items: center; padding: 20px;">
 
-            <form action="#" id="formCiclo">
+            <form action="#" id="formCiclo" style="display: contents;">
                 <label for="cilopdf">Seleccione el ciclo:</label>
                 <select name="cilopdf" id="cilopdf">
                     {% for id_ciclo, nombre_ciclo in ciclos.items() %}
@@ -132,12 +155,11 @@
                     {% endfor %}
                 </select>
                 <input type="button" value="Seleccionar" id="busquedaciclo">
-                <div class="container " id="button-container">
+                <div class="container " id="button-container" style="padding: 20px;">
                     <button class="my-button"  onclick = "generarPDF()" >Generar pdf</button>
                 </div>
 
-                <img id = "fondopdf" src="{{url_for('static', path='imgs/Reporte.png')}}" alt="fondopdf" style="display: none;">
-
+                
             </form>
         
         </div>
@@ -282,15 +304,24 @@
                                     }
                                     
                                 });
-                                document.getElementById("total_gr").dataset.variable = response.total_gr;
-                                document.getElementById("prom_gr").dataset.variable = response.prom_gr;
-                                document.getElementById("vendido").dataset.variable = response.vendido;
-                                document.getElementById("prom_precio").dataset.variable = response.prom_precio;
-                                document.getElementById("fecha_init").dataset.variable = response.fecha_init;
-                                document.getElementById("fecha_finish").dataset.variable = response.fecha_finish;
-                                document.getElementById("total_semanas").dataset.variable = response.total_semanas;
-                                document.getElementById("max_semana").dataset.variable = response.max_semana;
-                                document.getElementById("max_gr").dataset.variable = response.max_gr;
+
+                                if(pdf){
+                                    pdf.setFont("helvetica", "bold"); // Cambia "times" a la fuente que desees
+                                    pdf.setFontSize(35); // Cambia 12 al tamaño de fuente que desees
+
+                                    // Agrega 4 textos encima de la imagen.
+                                    pdf.text(String (response.total_gr), 425, 250);
+                                    pdf.text(String(response.prom_gr), 950, 250);
+                                    pdf.text(String(response.vendido), 125, 250);
+                                    pdf.text(String(response.prom_precio), 700, 250);  
+                                    pdf.text(String(response.total_semanas), 1020, 620);
+                                    pdf.text(String(response.max_semana), 1060, 428);
+                                    pdf.text(String(response.max_gr), 968, 482);
+
+                                    pdf.setFontSize(12); // Cambia 12 al tamaño de fuente que desees
+                                    pdf.text(String(response.fecha_init), 232, 95);  
+                                    pdf.text(String(response.fecha_finish), 415, 95); 
+                                }
 
                             }});
                             
@@ -335,79 +366,29 @@
         <p>&copy; Finca La Marina</p>
         
         <div class="container" id="container-3" style="display: flex;justify-content: center;align-items: center;height: 190;width: 380;">
-            <canvas id="myChart" style="padding: 20px;"></canvas>
+            <canvas id="myChart" style="padding: 20px;display: none;"></canvas>
         </div>
-        <span id="total_gr" data-variable="" style="display: none;"></span>
-        <span id="prom_gr" data-variable="" style="display: none;"></span>
-        <span id="vendido" data-variable="" style="display: none;"></span>
-        <span id="prom_precio" data-variable="" style="display: none;"></span>
-        <span id="fecha_init" data-variable="" style="display: none;"></span>
-        <span id="fecha_finish" data-variable="" style="display: none;"></span>
-        <span id="total_semanas" data-variable="" style="display: none;"></span>
-        <span id="max_semana" data-variable="" style="display: none;"></span>
-        <span id="max_gr" data-variable="" style="display: none;"></span>
 
-        <script>
-            
+        <script>        
             function generarPDF() {
-            // Obtén la imagen que se utilizará para crear el PDF.
-            var total_gr = document.getElementById("total_gr").textContent;
-            var vendido = document.getElementById("vendido").textContent;
-            var prom_precio = document.getElementById("prom_precio").textContent;
-            var prom_gr = document.getElementById('prom_gr').dataset.variable;
-            var fecha_init = document.getElementById('fecha_init').dataset.variable;
-            var fecha_finish = document.getElementById('fecha_finish').dataset.variable;
-            var total_semanas = document.getElementById('total_semanas').dataset.variable;
-            var max_semana = document.getElementById('max_semana').dataset.variable;
-            var max_gr = document.getElementById('max_gr').dataset.variable;
+                var chartCanvas = document.getElementById('myChart');
+                chartCanvas.style.display = 'block';
+                if(pdf){
+                    
 
-            var image = document.getElementById("fondopdf");
+                    html2canvas(chartCanvas, { backgroundColor: 'rgba(0,0,0,0)', scale: 5 }).then(function(canvas) {
+                        var imgData = canvas.toDataURL('image/png');
+                        
+                        // Agrega la imagen del gráfico al PDF
+                        pdf.addImage(imgData, 'PNG', 98 , 330, 750, 400);
 
-            // Obtiene las dimensiones de la imagen.
-            var imgWidth = image.width;
-            var imgHeight = image.height;
+                        // Guarda el documento PDF
+                        pdf.save("documento.pdf");
+                    });
+                }
+                chartCanvas.style.display = 'none';
+            }
 
-
-            // Crea un nuevo documento PDF con las dimensiones de la imagen.
-            var pdf = new jsPDF({
-                orientation: 'l',
-                unit: "pt",
-                format: [imgWidth, imgHeight]
-            });
-
-            // Agrega la imagen al documento PDF.
-            pdf.addImage(image, "PNG", 0, 0, imgWidth, imgHeight);
-            //pdf.addImage(image2, "PNG", 500, 500, 380, 375);
-
-            pdf.setFont("helvetica", "bold"); // Cambia "times" a la fuente que desees
-            pdf.setFontSize(35); // Cambia 12 al tamaño de fuente que desees
-
-            // Agrega 4 textos encima de la imagen.
-            pdf.text(total_gr, 425, 250);
-            pdf.text(prom_gr, 950, 250);
-            pdf.text(vendido, 125, 250);
-            pdf.text(prom_precio, 700, 250);  
-            pdf.text(total_semanas, 1020, 620);
-            pdf.text(max_semana, 1060, 428);
-            pdf.text(max_gr, 968, 482);
-
-            pdf.setFontSize(12); // Cambia 12 al tamaño de fuente que desees
-            pdf.text(fecha_init, 232, 95);  
-            pdf.text(fecha_finish, 415, 95); 
-
-            var chartCanvas = document.getElementById('myChart');
-
-            html2canvas(chartCanvas, { backgroundColor: 'rgba(0,0,0,0)', scale: 9 }).then(function(canvas) {
-                var imgData = canvas.toDataURL('image/png');
-                
-                // Agrega la imagen del gráfico al PDF
-                pdf.addImage(imgData, 'PNG', 98 , 330, 750, 400);
-
-                // Guarda el documento PDF
-                pdf.save("documento.pdf");
-            });
-        }
-        
         </script>
         
 

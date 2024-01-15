@@ -400,4 +400,4 @@ async def actalizarSemana(request: Request, valores: dict):
 if __name__ == "__main__":
     import uvicorn
     # Iniciar el servidor con uvicorn
-    uvicorn.run(app, port=8591)
+    uvicorn.run(app, port=8592)

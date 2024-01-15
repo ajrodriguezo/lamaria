@@ -1,9 +1,9 @@
 #!/bin/bash
-docker build -t freelance_jaca/lamarina:latest .
+docker build -t camilop121/lamarina:latest .
 
 docker run -it \
     --rm \
     --net="host"\
     --name="lamaria"\
     -v $(pwd)/..:/lamaria \
-    freelance_jaca/lamarina
+    camilop121/lamarina

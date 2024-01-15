@@ -1,0 +1,40 @@
+FROM python:3.10
+
+ARG ssh_prv_key
+ARG ssh_pub_key
+
+# Authorize SSH Host
+RUN mkdir -p /root/.ssh && \
+    chmod 0700 /root/.ssh && \
+    ssh-keyscan github.com > /root/.ssh/known_hosts
+
+RUN python3 -m pip install -U pip
+
+RUN echo "deb http://deb.debian.org/debian/ bullseye main contrib" >>  /etc/apt/sources.list && \
+    echo "deb-src http://deb.debian.org/debian/ bullseye main contrib" >>  /etc/apt/sources.list
+
+RUN apt-get update && \ 
+    apt-get install -y libgl1-mesa-glx
+
+# Add locales 
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y locales tzdata
+
+RUN sed -i -e 's/# es_CO.UTF-8 UTF-8/es_CO.UTF-8 UTF-8/' /etc/locale.gen && \
+    dpkg-reconfigure --frontend=noninteractive locales && \
+    update-locale LANG=es_CO.UTF-8
+
+# Add dependencies
+RUN pip install Jinja2 && \
+    pip install numpy && \
+    pip install fastapi && \
+    pip install "uvicorn[standard]" && \
+    pip install python-multipart && \
+    pip install sqlalchemy
+   
+ENV LANG es_CO.UTF-8
+ENV TZ='America/Bogota'
+
+WORKDIR /lamaria
+
+# Production 
+CMD ["uvicorn","app:app","--port","8590","--reload"]

@@ -397,3 +397,7 @@ async def actalizarSemana(request: Request, valores: dict):
         err = f"El ciclo {id} no tiene informacion guardada"
         raise HTTPException(status_code=400, detail=str(err))
     
+if __name__ == "__main__":
+    import uvicorn
+    # Iniciar el servidor con uvicorn
+    uvicorn.run(app, port=8591)

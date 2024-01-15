@@ -217,6 +217,7 @@
                             if (result.isConfirmed) {
                                 // Aquí puedes agregar la lógica para generar el PDF
                                 console.log('Generando PDF...');
+                                generar_chart(response.datos_grafica);
                                 // Obtén la imagen que se utilizará para crear el PDF.
                                 var total_gr = response.total_gr;
                                 var vendido = response.vendido;
@@ -309,9 +310,72 @@
     <footer id="page-footer">
         <p>&copy; Finca La Marina</p>
         
-        <div class="container" id="container-3" style="display: none;justify-content: center;align-items: center;">
+        <div class="container" id="container-3" style="display:absolute;left: -9999px;justify-content: center;align-items: center;">
             <canvas id="myChart" style="padding: 20px;"></canvas>
         </div>
+
+        <script>
+            
+            function generar_chart(datos){
+            var ctx = document.getElementById('myChart').getContext('2d');
+
+            var datos_grafica = datos;
+            datos_grafica = datos_grafica.replace(/'/g, '"');
+            var arreglo_grafica = JSON.parse(datos_grafica);
+
+            Chart.defaults.font.size = 16;
+            Chart.defaults.font.family = 'Arial';
+            Chart.defaults.color = '#eee127';
+
+            var myChart = new Chart(ctx, {
+                type: 'line',
+                defaultFontSize: 18,
+                data: {
+                    datasets: [{
+                        label: 'gr acumulados por semana',
+                        data: arreglo_grafica,
+                        backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1,
+
+                    }],
+                    font: {
+                        size: 30
+                    }
+                },
+                options: {
+                    scales: {
+                        x: {
+                            type: 'linear',
+                            position: 'bottom',
+                            title: {
+                                display: true,
+                                text: 'Semanas'
+                            },
+                            ticks: {
+                                stepSize: 1, // Configura el tamaño del paso para que sea 1 (entero)
+                                precision: 0 // Configura la precisión para que no se muestren decimales
+                            }
+                        },
+                        y: {
+                            type: 'linear',
+                            position: 'left',
+                            title: {
+                                display: true,
+                                text: 'Peso en gr'
+                            }
+                        }
+                    },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Ciclo de cosecha'
+                        }
+                    }
+                }
+            });
+        }
+        </script>
         
 
 

@@ -128,6 +128,8 @@
                 </select>
                 <input type="button" value="Seleccionar" id="busquedaciclo">
 
+                <img id = "fondopdf" src="{{url_for('static', path='imgs/Reporte.png')}}" alt="fondopdf" style="display: none;">
+
             </form>
         
         </div>
@@ -215,7 +217,57 @@
                             if (result.isConfirmed) {
                                 // Aquí puedes agregar la lógica para generar el PDF
                                 console.log('Generando PDF...');
-                                
+                                // Obtén la imagen que se utilizará para crear el PDF.
+                                var total_gr = response.total_gr;
+                                var vendido = response.vendido;
+                                var prom_precio = response.prom_precio;
+                                var prom_gr = response.prom_gr;
+                                var fecha_init =response.fecha_init ;
+                                var fecha_finish = response.fecha_finish;
+
+                                var image = document.getElementById("fondopdf");
+
+                                // Obtiene las dimensiones de la imagen.
+                                var imgWidth = image.width;
+                                var imgHeight = image.height;
+
+
+                                // Crea un nuevo documento PDF con las dimensiones de la imagen.
+                                var pdf = new jsPDF({
+                                    orientation: 'l',
+                                    unit: "pt",
+                                    format: [imgWidth, imgHeight]
+                                });
+
+                                // Agrega la imagen al documento PDF.
+                                pdf.addImage(image, "PNG", 0, 0, imgWidth, imgHeight);
+                                //pdf.addImage(image2, "PNG", 500, 500, 380, 375);
+
+                                pdf.setFont("helvetica", "bold"); // Cambia "times" a la fuente que desees
+                                pdf.setFontSize(35); // Cambia 12 al tamaño de fuente que desees
+
+                                // Agrega 4 textos encima de la imagen.
+                                pdf.text(total_gr, 425, 250);
+                                pdf.text(prom_gr, 950, 250);
+                                pdf.text(vendido, 125, 250);
+                                pdf.text(prom_precio, 700, 250);  
+
+                                pdf.setFontSize(12); // Cambia 12 al tamaño de fuente que desees
+                                pdf.text(fecha_init, 232, 95);  
+                                pdf.text(fecha_finish, 415, 95); 
+
+                                var chartCanvas = document.getElementById('myChart');
+
+                                html2canvas(chartCanvas, { backgroundColor: 'rgba(0,0,0,0)', scale: 9 }).then(function(canvas) {
+                                    var imgData = canvas.toDataURL('image/png');
+                                    
+                                    // Agrega la imagen del gráfico al PDF
+                                    pdf.addImage(imgData, 'PNG', 98 , 330, 750, 400);
+
+                                    // Guarda el documento PDF.s
+                                    pdf.save("documento.pdf");
+                                });
+
                             }});
                         } else {
                         Swal.fire({
@@ -256,8 +308,15 @@
 
     <footer id="page-footer">
         <p>&copy; Finca La Marina</p>
+        
+        <div class="container" id="container-3" style="display: none;justify-content: center;align-items: center;">
+            <canvas id="myChart" style="padding: 20px;"></canvas>
+        </div>
+        
+
+
     </footer>
     
-    <script src="{{url_for('static', path='/js/script.js')}}"></script>
+    
 </body>
 </html>

@@ -66,4 +66,4 @@ def maxValueSemana(datos_dict):
     filter = [x for x in vec_suma if not np.isnan(x)]
     index = filter.index(max(filter))
     
-    return cantidad_valores, index + 1, filter[index] 
+    return int(cantidad_valores), index + 1, filter[index] 

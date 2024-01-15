@@ -37,4 +37,4 @@ ENV TZ='America/Bogota'
 WORKDIR /lamaria
 
 # Production 
-CMD ["uvicorn","app:app","--port","8590","--reload"]
+CMD ["uvicorn","app:app","--host", "0.0.0.0","--port","8590","--reload"]

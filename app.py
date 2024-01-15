@@ -139,21 +139,24 @@ def home(request: Request):
         total_gr, prom_precio, gr_faltantes, vendido, prom_gr = 0, 0, 0, 0, 0
         total_semanas, max_semana, max_gr = 0, 0, 0
         relacion_gr = 0
-        fecha_finish = None
-        fecha_init = None
+        fecha_finish = "None"
+        fecha_init = "None"
     
-    return templates.TemplateResponse("main.html",{"request": request, "title": title,
-                                                   "fecha_init":fecha_init,
-                                                    "fecha_finish":fecha_finish, 
-                                                   "datos_grafica": datos_grafica, "total_gr": total_gr,
-                                                   "prom_precio": round(prom_precio,2),
-                                                   "gr_faltante": gr_faltantes,
-                                                   "vendido": round(vendido,2),
-                                                   "relacion_gr": relacion_gr,
-                                                   "prom_gr": round(prom_gr, 2),
-                                                   "total_semanas": total_semanas, 
-                                                   "max_semana": max_semana,
-                                                   "max_gr":max_gr})
+    return templates.TemplateResponse("main.html",{
+            "request": "request",
+            "fecha_init": fecha_init,
+            "fecha_finish": fecha_finish,
+            "datos_grafica": datos_grafica,
+            "total_gr": total_gr,
+            "prom_precio": round(prom_precio, 2),
+            "gr_faltante": gr_faltantes,
+            "vendido": round(vendido, 2),
+            "relacion_gr": relacion_gr,
+            "prom_gr": round(prom_gr, 2),
+            "total_semanas": total_semanas,
+            "max_semana": max_semana,
+            "max_gr": max_gr
+        })
 
 ## Ingreso Datos
 @app.get("/LaMaria/ingresoDatos")
@@ -376,23 +379,30 @@ async def actalizarSemana(request: Request, valores: dict):
         fecha_finish = "No tiene fecha establecida"
         if objCiclo.fecha_final != None:
             fecha_finish = objCiclo.fecha_final
-
         total_semanas, max_semana, max_gr = helpers.maxValueSemana(result_dict_gr)
 
-        return { "request": "request",
-                "id": id,
-                "fecha_init":fecha_init,
-                "fecha_finish":fecha_finish,
-                "datos_grafica": datos_grafica, "total_gr": total_gr,
-                "prom_precio": round(prom_precio,2),
-                "gr_faltante": gr_faltantes,
-                "vendido": round(vendido,2),
-                "relacion_gr": relacion_gr,
-                "prom_gr": round(prom_gr, 2),
-                "prom_gr": round(prom_gr, 2),
-                "total_semanas": total_semanas, 
-                "max_semana": max_semana,
-                "max_gr":max_gr}
+
+        req = {
+            "request": "request",
+            "id": id,
+            "fecha_init": fecha_init,
+            "fecha_finish": fecha_finish,
+            "datos_grafica": datos_grafica,
+            "total_gr": total_gr,
+            "prom_precio": round(prom_precio, 2),
+            "gr_faltante": gr_faltantes,
+            "vendido": round(vendido, 2),
+            "relacion_gr": relacion_gr,
+            "prom_gr": round(prom_gr, 2),
+            "total_semanas": total_semanas,
+            "max_semana": max_semana,
+            "max_gr": max_gr
+        }
+
+        for k,i in req.items():
+            print(f"{k} {i}", type(i))
+
+        return req
     else:
         err = f"El ciclo {id} no tiene informacion guardada"
         raise HTTPException(status_code=400, detail=str(err))

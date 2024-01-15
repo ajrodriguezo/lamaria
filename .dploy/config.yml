@@ -1,0 +1,12 @@
+project:
+  git_repository: 'https://github.com/ajrodriguezo/lamaria.git'
+  deploy:
+    directory: 'htdocs/www.lamarina-dashborad.online'
+    shared_directories:
+      #- 'var/log'
+    before_commands: # Before symlink switch
+      - cd "htdocs/www.lamarina-dashborad.online"
+      - ./docker/start.sh
+      # - 'find {release_directory} -type d -exec chmod 0770 {} \; && find {release_directory} -type f -exec chmod 660 {} \;'
+    after_commands: # After symlink switch
+      #- 'bash clpctl varnish-cache:purge --purge=all' # Varnish Cache Purge

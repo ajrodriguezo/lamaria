@@ -54,3 +54,16 @@ def verf_date(date:str, current_date:datetime):
     else:
         return input_date
     
+def maxValueSemana(datos_dict):
+    vec_suma = [
+        i if i is not None else np.nan for k, i in datos_dict.items() if "semana" in k
+    ]
+    
+    cantidad_valores = len(vec_suma) - np.isnan(vec_suma).sum()
+    cantidad_valores = cantidad_valores if cantidad_valores > 0 else 0
+
+    # Max
+    filter = [x for x in vec_suma if not np.isnan(x)]
+    index = filter.index(max(filter))
+    
+    return cantidad_valores, index + 1, filter[index] 

@@ -115,6 +115,9 @@ def home(request: Request):
             # Promedio
             _ , prom_precio = helpers.suma_y_promedio(result_dict_pr)
 
+            # Max y longitud
+            total_semanas, max_semana, max_gr = helpers.maxValueSemana(result_dict_gr)
+
             # Otros
             gr_faltantes = gr_goal - total_gr
             vendido = total_gr * prom_precio
@@ -134,6 +137,7 @@ def home(request: Request):
         print("No hay resultados")
         datos_grafica = [{}]
         total_gr, prom_precio, gr_faltantes, vendido, prom_gr = 0, 0, 0, 0, 0
+        total_semanas, max_semana, max_gr = 0, 0, 0
         relacion_gr = 0
         fecha_finish = None
         fecha_init = None
@@ -146,7 +150,10 @@ def home(request: Request):
                                                    "gr_faltante": gr_faltantes,
                                                    "vendido": round(vendido,2),
                                                    "relacion_gr": relacion_gr,
-                                                   "prom_gr": round(prom_gr, 2)})
+                                                   "prom_gr": round(prom_gr, 2),
+                                                   "total_semanas": total_semanas, 
+                                                   "max_semana": max_semana,
+                                                   "max_gr":max_gr})
 
 ## Ingreso Datos
 @app.get("/LaMaria/ingresoDatos")
@@ -370,6 +377,8 @@ async def actalizarSemana(request: Request, valores: dict):
         if objCiclo.fecha_final != None:
             fecha_finish = objCiclo.fecha_final
 
+        total_semanas, max_semana, max_gr = helpers.maxValueSemana(result_dict_gr)
+
         return { "request": "request",
                 "id": id,
                 "fecha_init":fecha_init,
@@ -379,8 +388,11 @@ async def actalizarSemana(request: Request, valores: dict):
                 "gr_faltante": gr_faltantes,
                 "vendido": round(vendido,2),
                 "relacion_gr": relacion_gr,
-                "prom_gr": round(prom_gr, 2)
-                }
+                "prom_gr": round(prom_gr, 2),
+                "prom_gr": round(prom_gr, 2),
+                "total_semanas": total_semanas, 
+                "max_semana": max_semana,
+                "max_gr":max_gr}
     else:
         err = f"El ciclo {id} no tiene informacion guardada"
         raise HTTPException(status_code=400, detail=str(err))

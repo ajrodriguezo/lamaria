@@ -132,6 +132,9 @@
                     {% endfor %}
                 </select>
                 <input type="button" value="Seleccionar" id="busquedaciclo">
+                <div class="container " id="button-container">
+                    <button class="my-button"  onclick = "generarPDF()" >Generar pdf</button>
+                </div>
 
                 <img id = "fondopdf" src="{{url_for('static', path='imgs/Reporte.png')}}" alt="fondopdf" style="display: none;">
 
@@ -213,76 +216,84 @@
                             text: "El ciclo elegido es el: " + response.id +
                                 "\n. Fecha de inicio: " + response.fecha_init +
                                 "\n. Fecha de Final: " + response.fecha_finish +
-                                "\n¿Desea generar el PDF?",
+                                "\n¿Es el cilo que desea generar?",
                             icon: 'question',
                             showCancelButton: true,
-                            confirmButtonText: 'Generar PDF',
-                            cancelButtonText: 'Cancelar'
+                            confirmButtonText: 'Si',
+                            cancelButtonText: 'No'
                         }).then((result) => {
                             if (result.isConfirmed) {
                                 // Aquí puedes agregar la lógica para generar el PDF
                                 console.log('Generando PDF...');
-                                generar_chart(response.datos_grafica);
-                                // Obtén la imagen que se utilizará para crear el PDF.
-                                var total_gr =String( response.total_gr);
-                                var vendido = String(response.vendido) ;
-                                var prom_precio = String(response.prom_precio) ;
-                                var prom_gr = String(response.prom_gr);
-                                var fecha_init = String(response.fecha_init);
-                                var fecha_finish = String(response.fecha_finish);
-                                var total_semanas = String(response.total_semanas);
-                                var max_semana = String(response.max_semana);
-                                var max_gr = String(response.max_gr);
+                                
+                                var ctx = document.getElementById('myChart').getContext('2d');
 
-                                var image = document.getElementById("fondopdf");
+                                var arreglo_grafica = response.datos_grafica;
 
-                                // Obtiene las dimensiones de la imagen.
-                                var imgWidth = image.width;
-                                var imgHeight = image.height;
+                                Chart.defaults.font.size = 16;
+                                Chart.defaults.font.family = 'Arial';
+                                Chart.defaults.color = '#eee127';
 
+                                var myChart = new Chart(ctx, {
+                                    type: 'line',
+                                    defaultFontSize: 18,
+                                    data: {
+                                        datasets: [{
+                                            label: 'gr acumulados por semana',
+                                            data: arreglo_grafica,
+                                            backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                                            borderColor: 'rgba(75, 192, 192, 1)',
+                                            borderWidth: 1,
 
-                                // Crea un nuevo documento PDF con las dimensiones de la imagen.
-                                var pdf = new jsPDF({
-                                    orientation: 'l',
-                                    unit: "pt",
-                                    format: [imgWidth, imgHeight]
-                                });
-
-                                // Agrega la imagen al documento PDF.
-                                pdf.addImage(image, "PNG", 0, 0, imgWidth, imgHeight);
-                                //pdf.addImage(image2, "PNG", 500, 500, 380, 375);
-
-                                pdf.setFont("helvetica", "bold"); // Cambia "times" a la fuente que desees
-                                pdf.setFontSize(35); // Cambia 12 al tamaño de fuente que desees
-
-                                // Agrega 4 textos encima de la imagen.
-                                pdf.text(total_gr, 425, 250);
-                                pdf.text(prom_gr, 950, 250);
-                                pdf.text(vendido, 125, 250);
-                                pdf.text(prom_precio, 700, 250);  
-                                pdf.text(total_semanas, 1020, 620);
-                                pdf.text(max_semana, 1060, 428);
-                                pdf.text(max_gr, 968, 482);
-
-                                pdf.setFontSize(12); // Cambia 12 al tamaño de fuente que desees
-                                pdf.text(fecha_init, 232, 95);  
-                                pdf.text(fecha_finish, 415, 95); 
-
-                                var chartCanvas = document.getElementById('myChart');
-
-                                html2canvas(chartCanvas, { backgroundColor: 'rgba(0,0,0,0)', scale: 5 }).then(function(canvas) {
-                                    var imgData = canvas.toDataURL('image/png');
+                                        }],
+                                        font: {
+                                            size: 30
+                                        }
+                                    },
+                                    options: {
+                                        scales: {
+                                            x: {
+                                                type: 'linear',
+                                                position: 'bottom',
+                                                title: {
+                                                    display: true,
+                                                    text: 'Semanas'
+                                                },
+                                                ticks: {
+                                                    stepSize: 1, // Configura el tamaño del paso para que sea 1 (entero)
+                                                    precision: 0 // Configura la precisión para que no se muestren decimales
+                                                }
+                                            },
+                                            y: {
+                                                type: 'linear',
+                                                position: 'left',
+                                                title: {
+                                                    display: true,
+                                                    text: 'Peso en gr'
+                                                }
+                                            }
+                                        },
+                                        plugins: {
+                                            title: {
+                                                display: true,
+                                                text: 'Ciclo de cosecha'
+                                            }
+                                        }
+                                    }
                                     
-                                    console.log(imgData);
-
-                                    // Agrega la imagen del gráfico al PDF
-                                    pdf.addImage(imgData, 'PNG', 98 , 330, 750, 400);
-
-                                    // Guarda el documento PDF.s
-                                    pdf.save("documento.pdf");
                                 });
+                                document.getElementById("total_gr").dataset.variable = response.total_gr;
+                                document.getElementById("prom_gr").dataset.variable = response.prom_gr;
+                                document.getElementById("vendido").dataset.variable = response.vendido;
+                                document.getElementById("prom_precio").dataset.variable = response.prom_precio;
+                                document.getElementById("fecha_init").dataset.variable = response.fecha_init;
+                                document.getElementById("fecha_finish").dataset.variable = response.fecha_finish;
+                                document.getElementById("total_semanas").dataset.variable = response.total_semanas;
+                                document.getElementById("max_semana").dataset.variable = response.max_semana;
+                                document.getElementById("max_gr").dataset.variable = response.max_gr;
 
                             }});
+                            
                         } else {
                         Swal.fire({
                             icon: "success",
@@ -326,66 +337,75 @@
         <div class="container" id="container-3" style="display: flex;justify-content: center;align-items: center;height: 190;width: 380;">
             <canvas id="myChart" style="padding: 20px;"></canvas>
         </div>
+        <span id="total_gr" data-variable="" style="display: none;"></span>
+        <span id="prom_gr" data-variable="" style="display: none;"></span>
+        <span id="vendido" data-variable="" style="display: none;"></span>
+        <span id="prom_precio" data-variable="" style="display: none;"></span>
+        <span id="fecha_init" data-variable="" style="display: none;"></span>
+        <span id="fecha_finish" data-variable="" style="display: none;"></span>
+        <span id="total_semanas" data-variable="" style="display: none;"></span>
+        <span id="max_semana" data-variable="" style="display: none;"></span>
+        <span id="max_gr" data-variable="" style="display: none;"></span>
 
         <script>
             
-            function generar_chart(datos){
-                var ctx = document.getElementById('myChart').getContext('2d');
+            function generarPDF() {
+            // Obtén la imagen que se utilizará para crear el PDF.
+            var total_gr = document.getElementById("total_gr").textContent;
+            var vendido = document.getElementById("vendido").textContent;
+            var prom_precio = document.getElementById("prom_precio").textContent;
+            var prom_gr = document.getElementById('prom_gr').dataset.variable;
+            var fecha_init = document.getElementById('fecha_init').dataset.variable;
+            var fecha_finish = document.getElementById('fecha_finish').dataset.variable;
+            var total_semanas = document.getElementById('total_semanas').dataset.variable;
+            var max_semana = document.getElementById('max_semana').dataset.variable;
+            var max_gr = document.getElementById('max_gr').dataset.variable;
 
-                var arreglo_grafica = datos;
+            var image = document.getElementById("fondopdf");
 
-                Chart.defaults.font.size = 16;
-                Chart.defaults.font.family = 'Arial';
-                Chart.defaults.color = '#eee127';
+            // Obtiene las dimensiones de la imagen.
+            var imgWidth = image.width;
+            var imgHeight = image.height;
 
-                var myChart = new Chart(ctx, {
-                    type: 'line',
-                    defaultFontSize: 18,
-                    data: {
-                        datasets: [{
-                            label: 'gr acumulados por semana',
-                            data: arreglo_grafica,
-                            backgroundColor: 'rgba(75, 192, 192, 0.5)',
-                            borderColor: 'rgba(75, 192, 192, 1)',
-                            borderWidth: 1,
 
-                        }],
-                        font: {
-                            size: 30
-                        }
-                    },
-                    options: {
-                        scales: {
-                            x: {
-                                type: 'linear',
-                                position: 'bottom',
-                                title: {
-                                    display: true,
-                                    text: 'Semanas'
-                                },
-                                ticks: {
-                                    stepSize: 1, // Configura el tamaño del paso para que sea 1 (entero)
-                                    precision: 0 // Configura la precisión para que no se muestren decimales
-                                }
-                            },
-                            y: {
-                                type: 'linear',
-                                position: 'left',
-                                title: {
-                                    display: true,
-                                    text: 'Peso en gr'
-                                }
-                            }
-                        },
-                        plugins: {
-                            title: {
-                                display: true,
-                                text: 'Ciclo de cosecha'
-                            }
-                        }
-                    }
-                });
-            
+            // Crea un nuevo documento PDF con las dimensiones de la imagen.
+            var pdf = new jsPDF({
+                orientation: 'l',
+                unit: "pt",
+                format: [imgWidth, imgHeight]
+            });
+
+            // Agrega la imagen al documento PDF.
+            pdf.addImage(image, "PNG", 0, 0, imgWidth, imgHeight);
+            //pdf.addImage(image2, "PNG", 500, 500, 380, 375);
+
+            pdf.setFont("helvetica", "bold"); // Cambia "times" a la fuente que desees
+            pdf.setFontSize(35); // Cambia 12 al tamaño de fuente que desees
+
+            // Agrega 4 textos encima de la imagen.
+            pdf.text(total_gr, 425, 250);
+            pdf.text(prom_gr, 950, 250);
+            pdf.text(vendido, 125, 250);
+            pdf.text(prom_precio, 700, 250);  
+            pdf.text(total_semanas, 1020, 620);
+            pdf.text(max_semana, 1060, 428);
+            pdf.text(max_gr, 968, 482);
+
+            pdf.setFontSize(12); // Cambia 12 al tamaño de fuente que desees
+            pdf.text(fecha_init, 232, 95);  
+            pdf.text(fecha_finish, 415, 95); 
+
+            var chartCanvas = document.getElementById('myChart');
+
+            html2canvas(chartCanvas, { backgroundColor: 'rgba(0,0,0,0)', scale: 9 }).then(function(canvas) {
+                var imgData = canvas.toDataURL('image/png');
+                
+                // Agrega la imagen del gráfico al PDF
+                pdf.addImage(imgData, 'PNG', 98 , 330, 750, 400);
+
+                // Guarda el documento PDF
+                pdf.save("documento.pdf");
+            });
         }
         
         </script>

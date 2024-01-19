@@ -17,7 +17,7 @@ from models.Gramos import Gramos
 from models import query
 from models import db
 from modules import helpers
-"""
+
 Path('logs').mkdir(parents=True, exist_ok=True)
 
 # Configure logging
@@ -26,7 +26,7 @@ logger = logging.getLogger('ai_app')
 logger.setLevel(logging.DEBUG)
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s: %(message)s', '%d-%m-%Y %I:%M:%S %p')
 console_handler = logging.StreamHandler()
-"""
+
 
 try:
     print("Eliminando db ... ")

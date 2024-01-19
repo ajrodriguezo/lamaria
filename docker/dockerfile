@@ -34,7 +34,19 @@ RUN pip install Jinja2 && \
 ENV LANG es_CO.UTF-8
 ENV TZ='America/Bogota'
 
+# Install Apache
+RUN apt-get update && \
+    apt-get install -y apache2 && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Configure Apache
+COPY apache-config.conf /etc/apache2/sites-available/000-default.conf
+
+# Enable mod_proxy
+RUN a2enmod proxy proxy_http
+
 WORKDIR /lamaria
 
 # Production 
-CMD ["uvicorn","app:app","--host", "0.0.0.0","--port","8591","--reload"]
+CMD service apache2 start && uvicorn app:app --host 0.0.0.0 --port 8591 --reload

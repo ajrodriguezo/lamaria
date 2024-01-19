@@ -344,6 +344,11 @@ async def enviar_booleano_endpoint2(request: Request, valor: dict):
 @app.post("/ingresoDatos/busquedaId")
 async def actalizarSemana(request: Request, valores: dict):
     print(valores)
+
+    if "cilopdf" not in valores.keys():
+        err = f"No se ha seleccionado una ciclo"
+        raise HTTPException(status_code=400, detail=str(err))
+
     id = valores["cilopdf"]
 
     if Precios.getById(id):

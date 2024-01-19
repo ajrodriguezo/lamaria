@@ -48,8 +48,8 @@
 
         <div id="mySidebar" class="sidebar">
             <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
-            <a href="/LaMaria/home">Inicio</a>
-            <a href="/LaMaria/ingresoDatos">Datos</a>
+            <a href="/home">Inicio</a>
+            <a href="/ingresoDatos">Datos</a>
         </div>
 
         <div id="boton">
@@ -85,7 +85,7 @@
 
         <div id="datos_semana" style="height: 35px; width: 95%; display: flex; justify-content: space-around;">
             
-            <form id="datosForm" method="post" action="/LaMaria/ingresoDatos" style="display: inline-flex; width: 100%; justify-content: space-around; align-items: center;">
+            <form id="datosForm" method="post" action="/ingresoDatos" style="display: inline-flex; width: 100%; justify-content: space-around; align-items: center;">
 
                 <label for="grsemana">Kg acumulados</label>
                 <input type="number" id="grsemana" name="grsemana" placeholder="0 Kg" min="0" max="10000000" step="1" required>
@@ -118,7 +118,7 @@
                     // document.getElementById('datosForm').submit();
 
                     console.log(jsonData);
-                    enviarDatos(jsonData, "/LaMaria/ingresoDatos/actualizarSemana"); 
+                    enviarDatos(jsonData, "/ingresoDatos/actualizarSemana"); 
 
                 });
             </script>
@@ -182,7 +182,7 @@
                 // document.getElementById('formCiclo').submit();
         
                 console.log(jsonData);
-                enviarDatos(jsonData, "/LaMaria/ingresoDatos/busquedaId");
+                enviarDatos(jsonData, "/ingresoDatos/busquedaId");
             });
         </script>
 
@@ -201,7 +201,7 @@
                 };  
                 var jsonData = JSON.stringify(data);
                 console.log(jsonData);
-                enviarDatos(jsonData, "/LaMaria/ingresoDatos/CrearCiclo");            
+                enviarDatos(jsonData, "/ingresoDatos/CrearCiclo");            
             });
     
             btnTrueEndpoint2.addEventListener('click', function() {
@@ -215,7 +215,7 @@
                     flag: true,
                 };  
                 var jsonData = JSON.stringify(data);
-                enviarDatos(jsonData, "/LaMaria/ingresoDatos/FinalizarCiclo"); 
+                enviarDatos(jsonData, "/ingresoDatos/FinalizarCiclo"); 
             });
     
             // Función para enviar el valor booleano al servidor

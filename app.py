@@ -21,17 +21,12 @@ from modules import helpers
 Path('logs').mkdir(parents=True, exist_ok=True)
 
 # Configure logging
-logging.basicConfig(filename = 'logs/lamaria.log')
+logging.basicConfig(filename = 'logs.log')
 logger = logging.getLogger('ai_app')
 logger.setLevel(logging.DEBUG)
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s: %(message)s', '%d-%m-%Y %I:%M:%S %p')
 console_handler = logging.StreamHandler()
 
-
-try:
-    print("Eliminando db ... ")
-    os.remove("tmp.db")
-except: pass
 
 # Crete app
 app = FastAPI()
@@ -59,7 +54,7 @@ Gramos.add({
     "semana_id":"ahjski",
     "semana_1": 10.0
 })
-"""
+
 
 Ciclo.add({
     "ciclos":{
@@ -80,6 +75,7 @@ Ciclo.add({
         'semana_4': 400
     },
 })
+"""
 
 dict_normalzate = {
     "grsemana": "Kg acumulados",
@@ -87,12 +83,13 @@ dict_normalzate = {
     "semana": "No. semana"
 }
 
+
 ## Create templates
 app.mount("/static", StaticFiles(directory="modules/static"), name="static")
 templates = Jinja2Templates(directory="modules/static/templates")
 
 ## Home page
-@app.get("/LaMaria/home")
+@app.get("/home")
 def home(request: Request):
     title = 'Finca La Marina'
     lastId = Ciclo.getLastActive()
@@ -157,7 +154,7 @@ def home(request: Request):
                                                    "max_gr":max_gr})
 
 ## Ingreso Datos
-@app.get("/LaMaria/ingresoDatos")
+@app.get("/ingresoDatos")
 async def datos(request: Request):
     title = 'Finca La Marina'
     ciclos = query.getAllElementsColumn(Ciclo, "ciclo_id")
@@ -168,7 +165,7 @@ async def datos(request: Request):
                                                     "ciclos": dict_ciclos})
 
 
-@app.post("/LaMaria/ingresoDatos/actualizarSemana")
+@app.post("/ingresoDatos/actualizarSemana")
 async def actalizarSemana(request: Request, valores: dict):
     print(valores)
     for val in valores:
@@ -274,7 +271,7 @@ async def actalizarSemana(request: Request, valores: dict):
 
     return {"success": True, "message": txt}
 
-@app.post("/LaMaria/ingresoDatos/CrearCiclo")
+@app.post("/ingresoDatos/CrearCiclo")
 async def enviar_booleano_endpoint2(request: Request, valor: dict):
     data = valor
     print(f"Valor booleano recibido en el Endpoint 1")
@@ -318,7 +315,7 @@ async def enviar_booleano_endpoint2(request: Request, valor: dict):
         print(txt)
         return {"success": True, "message": txt}     
 
-@app.post("/LaMaria/ingresoDatos/FinalizarCiclo")
+@app.post("/ingresoDatos/FinalizarCiclo")
 async def enviar_booleano_endpoint2(request: Request, valor: dict):
     valor_booleano = valor 
     print(f"Valor booleano recibido en el Endpoint 2: {valor_booleano}")
@@ -344,7 +341,7 @@ async def enviar_booleano_endpoint2(request: Request, valor: dict):
         raise HTTPException(status_code=400, detail=str(err))
 
     
-@app.post("/LaMaria/ingresoDatos/busquedaId")
+@app.post("/ingresoDatos/busquedaId")
 async def actalizarSemana(request: Request, valores: dict):
     print(valores)
     id = valores["cilopdf"]

@@ -346,7 +346,7 @@ async def actalizarSemana(request: Request, valores: dict):
     print(valores)
 
     if "cilopdf" not in valores.keys():
-        err = f"No se ha seleccionado una ciclo"
+        err = f"No se ha seleccionado un ciclo"
         raise HTTPException(status_code=400, detail=str(err))
 
     id = valores["cilopdf"]
